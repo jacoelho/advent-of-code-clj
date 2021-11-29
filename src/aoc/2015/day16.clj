@@ -1,6 +1,6 @@
 (ns aoc.2015.day16
   (:require
-   [aoc.file :as aoc]
+   [aoc.file :as file]
    [clojure.test :refer [testing is]]))
 
 
@@ -9,13 +9,13 @@
 (defn parse-line
   [line]
   (let [[_ number a aa b bb c cc] (re-find re line)
-        [number' aa' bb' cc']     (map aoc/->int [number aa bb cc])]
+        [number' aa' bb' cc']     (map file/->int [number aa bb cc])]
     {number' {a aa'
               b bb'
               c cc'}}))
 
-(def day16-input
-  (aoc/read-lines parse-line "2015/day16.txt"))
+(def input
+  (file/read-lines parse-line "2015/day16.txt"))
 
 (def memory {"children"    3
              "cats"        7
@@ -47,7 +47,7 @@
        (some (partial matches same-count? memory))))
 
 (testing "Part 01"
-  (is (= 103 (part01 memory day16-input))))
+  (is (= 103 (part01 memory input))))
 
 (defn updated-instructions
   [memory entry]
@@ -66,4 +66,4 @@
        (some (partial matches updated-instructions memory))))
 
 (testing "Part 02"
-  (is (= 405 (part02 memory day16-input))))
+  (is (= 405 (part02 memory input))))

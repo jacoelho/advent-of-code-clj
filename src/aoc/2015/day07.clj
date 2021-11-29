@@ -1,6 +1,7 @@
 (ns aoc.2015.day07
   (:require
-   [aoc.file :as file]))
+   [aoc.file :as file]
+   [aoc.parse :as parse]))
 
 (def mask
   "16 bit mask"
@@ -29,7 +30,7 @@
 (defn uint-or-string
   [value]
   (try
-    (file/->uint value)
+    (parse/->uint value)
     (catch NumberFormatException _ value)))
 
 (defn parse-line

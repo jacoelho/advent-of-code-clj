@@ -1,6 +1,6 @@
 (ns aoc.2015.day09
   (:require
-   [aoc.file :as aoc]
+   [aoc.file :as file]
    [clojure.test :refer [testing is]]))
 
 (defrecord Pair [start end ^int distance])
@@ -8,12 +8,12 @@
 (defn parse-line
   [line]
   (let [[_ start end d] (re-find #"^(\w+) to (\w+) = (\d+)$" line)
-        distance (aoc/->int d)]
+        distance (file/->int d)]
     [(->Pair start end distance) (->Pair end start distance)]))
 
-(def day09-input
+(def input
   (->>
-   (aoc/read-lines parse-line "2015/day09.txt")
+   (file/read-lines parse-line "2015/day09.txt")
    (apply concat)
    (group-by :start)))
 
@@ -42,11 +42,11 @@
   (apply min (visit-all input)))
 
 (testing "Part 01"
-  (is (= 207 (part01 day09-input))))
+  (is (= 207 (part01 input))))
 
 (defn part02
   [input]
   (apply max (visit-all input)))
 
 (testing "Part 02"
-  (is (= 804 (part02 day09-input))))
+  (is (= 804 (part02 input))))

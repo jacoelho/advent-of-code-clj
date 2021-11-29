@@ -1,6 +1,6 @@
 (ns aoc.2015.day15
   (:require
-   [aoc.file :as aoc]
+   [aoc.file :as file]
    [clojure.test :refer [testing is]]
    [clojure.string :as str]))
 
@@ -14,7 +14,7 @@
 (defn parse-line
   [line]
   (let [[_ name & attributes] (re-find re line)
-        [c d f t cal]           (map aoc/->int attributes)]
+        [c d f t cal]           (map file/->int attributes)]
     [name {
            :capacity   c
            :durability d
@@ -24,15 +24,15 @@
            }
     ]))
 
-(def day15-example
+(def example
   (->> "Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8
 Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3"
        (str/split-lines)
        (map parse-line)
        (into {})))
 
-(def day15-input
-  (into {} (aoc/read-lines parse-line "2015/day15.txt")))
+(def input
+  (into {} (file/read-lines parse-line "2015/day15.txt")))
 
 (defn score
   [ingredients mixture]
@@ -74,7 +74,7 @@ Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3"
        (apply max)))
 
 (testing "Part 01"
-  (is (= 13882464 (part01 day15-input (mixtures)))))
+  (is (= 13882464 (part01 input (mixtures)))))
 
 (defn part02
   [input mix]
@@ -88,4 +88,4 @@ Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3"
        (apply max)))
 
 (testing "Part 02"
-  (is (= 11171160 (part02 day15-input (mixtures)))))
+  (is (= 11171160 (part02 input (mixtures)))))

@@ -1,12 +1,12 @@
 (ns aoc.2015.day12
   (:require
-   [aoc.file :as aoc]
+   [aoc.file :as file]
    [clojure.data.json :as json]
    [clojure.walk :as w]
    [clojure.test :refer [testing is]]))
 
-(def day12-input
-  (json/read-str (aoc/read-input "2015/day12.txt")))
+(def input
+  (json/read-str (file/read-input "2015/day12.txt")))
 
 (defn cardinality-many? [x]
   (boolean
@@ -36,7 +36,7 @@
        (walk-reduce adder 0)))
 
 (testing "Part 01"
-  (is (= 191164 (part01 day12-input))))
+  (is (= 191164 (part01 input))))
 
 (defn discard-red
   [input]
@@ -54,7 +54,7 @@
        (walk-reduce adder 0)))
 
 (testing "Part 02"
-  (is (= 87842 (part02 day12-input))))
+  (is (= 87842 (part02 input))))
 
 
 

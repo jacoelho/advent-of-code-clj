@@ -1,12 +1,13 @@
 (ns aoc.2015.day02
   (:require
    [aoc.file :as file]
+   [aoc.parse :as parse]
    [clojure.string :as str]))
 
 (defn parse
   [line]
   (->> (str/split line #"x")
-       (map file/->int)))
+       (map parse/->int)))
 
 (def input
   (file/read-lines parse "2015/day02.txt"))

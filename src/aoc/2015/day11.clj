@@ -1,6 +1,5 @@
 (ns aoc.2015.day11
   (:require
-   [aoc.file :as aoc]
    [clojure.test :refer [testing is]]))
 
 (defn char->numeric

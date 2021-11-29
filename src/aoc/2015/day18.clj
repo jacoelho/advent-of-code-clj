@@ -1,6 +1,6 @@
 (ns aoc.2015.day18
   (:require
-   [aoc.file :as aoc]
+   [aoc.file :as file]
    [clojure.test :refer [testing is]]
    [clojure.string :as str]))
 
@@ -11,10 +11,10 @@
                \# 1
                \. 0))))
 
-(def day18-input
-  (vec (aoc/read-lines parse-line "2015/day18.txt")))
+(def input
+  (vec (file/read-lines parse-line "2015/day18.txt")))
 
-(def day18-example
+(def example
   (mapv parse-line
         (str/split-lines ".#.#.#
 ...##.
@@ -65,7 +65,7 @@
        (count-lights-on)))
 
 (testing "Part 01"
-  (is (= 814 (part01 day18-input 100))))
+  (is (= 814 (part01 input 100))))
 
 (defn corners-on
   [layout]
@@ -83,4 +83,4 @@
        (count-lights-on)))
 
 (testing "Part 02"
-  (is (= 924 (part02 day18-input 100))))
+  (is (= 924 (part02 input 100))))

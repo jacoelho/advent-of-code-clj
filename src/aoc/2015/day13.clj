@@ -1,20 +1,20 @@
 (ns aoc.2015.day13
   (:require
-   [aoc.file :as aoc]
+   [aoc.file :as file]
    [clojure.test :refer [testing is]]
    [clojure.string :as str]))
 
 (defn parse-line
   [line]
   (let [[_ source sign d destination] (re-find #"^(\w+) would (lose|gain) (\d+) happiness units by sitting next to (\w+)\.$" line)
-        happiness (aoc/->int d)]
+        happiness (file/->int d)]
     {[source destination] (if (= sign "lose") (* -1 happiness) happiness)}))
 
-(def day13-input
-  (->> (aoc/read-lines parse-line "2015/day13.txt")
+(def input
+  (->> (file/read-lines parse-line "2015/day13.txt")
        (into {})))
 
-(def day13-example
+(def example
   (into {} 
         (map
          parse-line
@@ -49,7 +49,7 @@ David would gain 41 happiness units by sitting next to Carol."))))
        (keys)
        (map first)
        (set)
-       (aoc/permutations-set)
+       (file/permutations-set)
        (map (comp
              (partial map (partial into []))
              (partial partition 2 1)
@@ -61,8 +61,8 @@ David would gain 41 happiness units by sitting next to Carol."))))
   (apply max (map (partial arrangement-happiness input) (arrangements input))))
 
 (testing "Part 01"
-  (is (= 330 (part01 day13-example))
-  (is (= 664 (part01 day13-input)))))
+  (is (= 330 (part01 example))
+  (is (= 664 (part01 input)))))
 
 (testing "Part 02"
-  (is (= 640 (part01 (conj day13-input [["you" "you"] 0])))))
+  (is (= 640 (part01 (conj input [["you" "you"] 0])))))

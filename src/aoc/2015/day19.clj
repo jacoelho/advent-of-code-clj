@@ -1,6 +1,6 @@
 (ns aoc.2015.day19
   (:require
-   [aoc.file :as aoc]
+   [aoc.file :as file]
    [clojure.test :refer [testing is]]
    [clojure.string :as str]))
 
@@ -9,8 +9,8 @@
   (let [[_ source destination] (re-find #"^(\w+) => (\w+)$" line)]
     {source destination}))
 
-(def day19-input
-  (let [input        (aoc/read-lines str/split-lines "2015/day19.txt")
+(def input
+  (let [input        (file/read-lines str/split-lines "2015/day19.txt")
         medicine     (peek input)
         replacements (->> (drop-last 2 input)
                           (map (comp parse-replace first))
@@ -51,7 +51,7 @@
   (count (replacements translations medicine)))
 
 (testing "Part 01"
-  (is (= 576 (part01 (second day19-input) (first day19-input)))))
+  (is (= 576 (part01 (second input) (first input)))))
 
 (defn complex->from [m]
   (reduce-kv (fn [m k v]
@@ -86,4 +86,4 @@
                                             (compact medicine translations "e")))))))
 
 (testing "Part 02"
-  (is (= 207 (part02 (second day19-input) (first day19-input)))))
+  (is (= 207 (part02 (second input) (first input)))))
