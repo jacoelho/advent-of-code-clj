@@ -4,6 +4,7 @@
 
 (deftest part01
   (testing "inputs"
+    (is (= 5 5))
     (is (= 1333 (day08/part01 day08/input)))))
 
 (deftest part02

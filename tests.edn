@@ -1,0 +1,11 @@
+#kaocha/v1
+ {:tests [{:id          :unit
+           :source-paths ["src"]
+           :test-paths ["test"]
+           :ns-patterns ["-test$"]}]
+  :plugins [:kaocha.plugin/profiling]
+  :capture-output? true
+  :color? true
+  :reporter kaocha.report.progress/report
+  :kaocha.plugin.profiling/count 10
+  :kaocha.plugin.profiling/profiling? true}

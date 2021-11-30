@@ -1,14 +1,14 @@
 (ns aoc.2015.day09
   (:require
    [aoc.file :as file]
-   [clojure.test :refer [testing is]]))
+   [aoc.parse :as parse]))
 
 (defrecord Pair [start end ^int distance])
 
 (defn parse-line
   [line]
   (let [[_ start end d] (re-find #"^(\w+) to (\w+) = (\d+)$" line)
-        distance (file/->int d)]
+        distance (parse/->int d)]
     [(->Pair start end distance) (->Pair end start distance)]))
 
 (def input
@@ -41,12 +41,6 @@
   [input]
   (apply min (visit-all input)))
 
-(testing "Part 01"
-  (is (= 207 (part01 input))))
-
 (defn part02
   [input]
   (apply max (visit-all input)))
-
-(testing "Part 02"
-  (is (= 804 (part02 input))))

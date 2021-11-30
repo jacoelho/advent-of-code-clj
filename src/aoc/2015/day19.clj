@@ -1,7 +1,6 @@
 (ns aoc.2015.day19
   (:require
    [aoc.file :as file]
-   [clojure.test :refer [testing is]]
    [clojure.string :as str]))
 
 (defn parse-replace
@@ -50,9 +49,6 @@
   [medicine translations]
   (count (replacements translations medicine)))
 
-(testing "Part 01"
-  (is (= 576 (part01 (second input) (first input)))))
-
 (defn complex->from [m]
   (reduce-kv (fn [m k v]
                (reduce #(assoc % %2 k) m v))
@@ -84,6 +80,3 @@
   (apply min (filter pos? 
                      (take 40 (repeatedly (fn []
                                             (compact medicine translations "e")))))))
-
-(testing "Part 02"
-  (is (= 207 (part02 (second input) (first input)))))

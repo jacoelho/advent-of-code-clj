@@ -4,10 +4,10 @@
 
 Run all tests:
 ```
-clj -X:test 
+clj -M:test
 ```
 
 Run a specific test:
 ```
-clj -M:test -n aoc.2015.day05-test
+clj -M:test --focus aoc.2015.day05-test
 ```

@@ -98,3 +98,13 @@
 
 (shuffle #{1 2 3})
 ;; 1362 too high
+
+(def input "foo")
+
+(defn part01
+  [s]
+  s)
+
+(defn part02
+  [s]
+  s)

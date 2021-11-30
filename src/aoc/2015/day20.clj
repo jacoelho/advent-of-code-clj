@@ -1,8 +1,4 @@
-(ns aoc.2015.day20
-  (:require
-   [aoc.file :as aoc]
-   [clojure.test :refer [testing is]]
-   [clojure.string :as str]))
+(ns aoc.2015.day20)
 
 (defn factors
   ([^long n]
@@ -33,8 +29,6 @@
         i
         (recur (inc i))))))
 
-(testing "Part 01"
-  (is (= 786240 (part01 34000000))))
 
 (defn part02
   [^long bound]
@@ -44,6 +38,3 @@
       (if (>= (sum-factors (partial filter #(<= (quot i %) 50)) i) sigma)
         i
         (recur (inc i))))))
-
-(testing "Part 02"
-  (is (= 831600 (part02 34000000))))

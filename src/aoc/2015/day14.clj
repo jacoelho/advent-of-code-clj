@@ -1,15 +1,15 @@
 (ns aoc.2015.day14
   (:require
    [aoc.file :as file]
-   [clojure.test :refer [testing is]]))
+   [aoc.parse :as parse]))
 
 (defn parse-line
   [line]
   (let [[_ reindeer speed resistence rest] (re-find #"^(\w+) can fly (\d+) km/s for (\d+) seconds, but then must rest for (\d+) seconds\.$" line)]
     {:reindeer   reindeer
-     :kms        (file/->int speed)
-     :resistence (file/->int resistence)
-     :rest       (file/->int rest)}))
+     :kms        (parse/->int speed)
+     :resistence (parse/->int resistence)
+     :rest       (parse/->int rest)}))
 
 (def input
   (file/read-lines parse-line "2015/day14.txt"))
@@ -32,9 +32,6 @@
   [input time]
   (apply max (map (partial race time) input)))
 
-(testing "Part 01"
-  (is (= 2660 (part01 input 2503))))
-
 (defn race-tick-winner
   [input race-time]
   (->> input
@@ -51,5 +48,3 @@
        (vals)
        (apply max)))
 
-(testing "Part 02"
-  (is (= 1256 (part02 input 2503))))

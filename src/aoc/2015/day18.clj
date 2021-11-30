@@ -1,7 +1,6 @@
 (ns aoc.2015.day18
   (:require
    [aoc.file :as file]
-   [clojure.test :refer [testing is]]
    [clojure.string :as str]))
 
 (defn parse-line
@@ -64,9 +63,6 @@
        (first)
        (count-lights-on)))
 
-(testing "Part 01"
-  (is (= 814 (part01 input 100))))
-
 (defn corners-on
   [layout]
   (let [max-x (dec (count (first layout)))
@@ -81,6 +77,3 @@
        (drop steps)
        (first)
        (count-lights-on)))
-
-(testing "Part 02"
-  (is (= 924 (part02 input 100))))

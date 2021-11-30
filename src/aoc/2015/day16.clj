@@ -1,15 +1,14 @@
 (ns aoc.2015.day16
   (:require
    [aoc.file :as file]
-   [clojure.test :refer [testing is]]))
-
+   [aoc.parse :as parse]))
 
 (def re #"^Sue (\d+): (\w+): (\d+), (\w+): (\d+), (\w+): (\d+)$")
 
 (defn parse-line
   [line]
   (let [[_ number a aa b bb c cc] (re-find re line)
-        [number' aa' bb' cc']     (map file/->int [number aa bb cc])]
+        [number' aa' bb' cc']     (map parse/->int [number aa bb cc])]
     {number' {a aa'
               b bb'
               c cc'}}))
@@ -46,9 +45,6 @@
   (->> input
        (some (partial matches same-count? memory))))
 
-(testing "Part 01"
-  (is (= 103 (part01 memory input))))
-
 (defn updated-instructions
   [memory entry]
   (every? (fn [[k v]]
@@ -64,6 +60,3 @@
   [memory input]
   (->> input
        (some (partial matches updated-instructions memory))))
-
-(testing "Part 02"
-  (is (= 405 (part02 memory input))))

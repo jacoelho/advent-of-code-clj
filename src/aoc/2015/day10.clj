@@ -1,10 +1,9 @@
 (ns aoc.2015.day10
   (:require
-   [aoc.file :as file]
-   [clojure.test :refer [testing is]]))
+   [aoc.math :as math]))
 
 (def input 
-  (file/long->digits 1321131112))
+  (math/long->digits 1321131112))
 
 (defn look-and-say-one
   [col]
@@ -21,8 +20,3 @@
        (first)
        (count)))
   
-(testing "Part 01"
-  (is (= 492982 (part01 40 input))))
-
-(testing "Part 02"
-  (is (= 6989950 (part01 50 input))))

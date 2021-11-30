@@ -1,8 +1,6 @@
 (ns aoc.2015.day21
-  (:require
-    [aoc.file :as aoc]
-    [clojure.test :refer [testing is]]
-    [clojure.math.combinatorics :refer [combinations]]))
+  (:require 
+   [clojure.math.combinatorics :refer [combinations]]))
 
 (def weapons
   [
@@ -115,9 +113,6 @@
        (map :cost)
        (apply min)))
 
-(testing "Part 01"
-  (is (= 111 (part01 player boss))))
-
 (defn part02
   [player boss]
   (->> (equipment-sets)
@@ -125,6 +120,3 @@
        (filter #(not (fight % boss)))
        (map :cost)
        (apply max)))
-
-(testing "Part 02"
-  (is (= 188 (part02 player boss))))

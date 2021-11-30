@@ -35,9 +35,6 @@
   (->> input
        (walk-reduce adder 0)))
 
-(testing "Part 01"
-  (is (= 191164 (part01 input))))
-
 (defn discard-red
   [input]
   (w/prewalk (fn [node]
@@ -52,15 +49,4 @@
   (->> input
        (discard-red)
        (walk-reduce adder 0)))
-
-(testing "Part 02"
-  (is (= 87842 (part02 input))))
-
-
-
-(some #{"red"} '(1 2 "red" 3))
-
-
-
-
 

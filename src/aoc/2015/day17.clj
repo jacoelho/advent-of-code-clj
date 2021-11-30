@@ -1,11 +1,11 @@
 (ns aoc.2015.day17
   (:require
    [aoc.file :as file]
-   [clojure.test :refer [testing is deftest]]
+   [aoc.parse :as parse]
    [clojure.math.combinatorics :refer [subsets]]))
 
 (def input
-  (file/read-lines file/->int "2015/day17.txt"))
+  (file/read-lines parse/->int "2015/day17.txt"))
 
 (defn containers-matches
   [input]
@@ -26,9 +26,3 @@
        (containers-matches)
        (map count)
        (apply min)))
-
-(deftest day17
-  (testing "Part 01"
-    (is (= 4372 (part01 input))))
-  (testing "Part 02"
-    (is (= 4 (part02 input)))))

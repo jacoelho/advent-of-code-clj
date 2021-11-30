@@ -1,6 +1,4 @@
-(ns aoc.2015.day11
-  (:require
-   [clojure.test :refer [testing is]]))
+(ns aoc.2015.day11)
 
 (defn char->numeric
   [c]
@@ -76,9 +74,3 @@
        (filter valid?)
        (first)
        (numeric->string)))
-
-(testing "Part 01"
-  (is (= "cqjxxyzz" (part01 "cqjxjnds"))))
-
-(testing "Part 02"
-  (is (= "cqkaabcc" (part01 "cqjxxyzz"))))

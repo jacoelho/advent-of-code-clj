@@ -1,7 +1,7 @@
 (ns aoc.2015.day15
   (:require
    [aoc.file :as file]
-   [clojure.test :refer [testing is]]
+   [aoc.parse :as parse]
    [clojure.string :as str]))
 
 ;; Sprinkles: capacity 5, durability -1, flavor 0, texture 0, calories 5
@@ -14,7 +14,7 @@
 (defn parse-line
   [line]
   (let [[_ name & attributes] (re-find re line)
-        [c d f t cal]           (map file/->int attributes)]
+        [c d f t cal]           (map parse/->int attributes)]
     [name {
            :capacity   c
            :durability d
@@ -73,9 +73,6 @@ Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3"
          (partial score input)))
        (apply max)))
 
-(testing "Part 01"
-  (is (= 13882464 (part01 input (mixtures)))))
-
 (defn part02
   [input mix]
   (->> mix
@@ -87,5 +84,3 @@ Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3"
          (partial drop-last)))
        (apply max)))
 
-(testing "Part 02"
-  (is (= 11171160 (part02 input (mixtures)))))
