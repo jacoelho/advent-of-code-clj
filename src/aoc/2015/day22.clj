@@ -153,7 +153,3 @@
   [state]
   (simulate next-states-hard-mode {:best   Integer/MAX_VALUE
                                    :states [state]}))
-
-
-
-

@@ -4,8 +4,8 @@
 
 (deftest part01
   (testing "inputs"
-    (is (= 492982 (day23/part01 day23/input)))))
+    (is (= 255 (day23/part01 day23/input)))))
 
 (deftest part02
   (testing "inputs"
-     (is (= 6989950 (day23/part01 day23/input)))))
+     (is (= 334 (day23/part02 day23/input)))))
