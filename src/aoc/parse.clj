@@ -1,10 +1,19 @@
 (ns aoc.parse)
 
-(defn ->int [int]
+(defn ->int
+  [int]
   (Integer/parseInt int))
 
-(defn ->uint [int]
+(defn try->int
+  [int]
+  (try
+    (Integer/parseInt int)
+    (catch NumberFormatException _ nil)))
+
+(defn ->uint
+  [int]
   (Integer/parseUnsignedInt int))
 
-(defn ->long [l]
+(defn ->long
+  [l]
   (Long/parseLong l))
