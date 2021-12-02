@@ -25,8 +25,7 @@
 (defn repetition-code
   [compare input]
   (->> input
-       (apply mapcat vector)
-       (partition (count input))
+       (apply map vector)
        (map (comp
               ffirst
               (partial sort-by val compare)
