@@ -1,9 +1,8 @@
 (ns aoc.2016.day01
   (:require [aoc.file :as file]
             [aoc.parse :as parse]
-            [aoc.math :as math]
-            [aoc.collections :as collections]
-            [clojure.string :as str]))
+            [aoc.geometry :as geometry]
+            [aoc.collections :as collections]))
 
 (def input
   (->> "2016/day01.txt"
@@ -70,9 +69,9 @@
 (defn part01
   [input]
   (let [{:keys [x y]} (walk input)]
-    (math/manhattan-distance [0 0] [x y])))
+    (geometry/manhattan-distance [x y])))
 
 (defn part02
   [input]
   (let [{:keys [visited]} (walk input)]
-    (math/manhattan-distance [0 0] (collections/first-duplicate visited))))
+    (geometry/manhattan-distance(collections/first-duplicate visited))))
