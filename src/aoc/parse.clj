@@ -17,3 +17,7 @@
 (defn ->long
   [l]
   (Long/parseLong l))
+
+(defn binary-string->int
+  [^String s]
+  (Integer/parseInt s 2))
