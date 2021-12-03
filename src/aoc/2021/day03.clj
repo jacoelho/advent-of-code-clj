@@ -1,6 +1,7 @@
 (ns aoc.2021.day03
   (:require [aoc.file :as file]
-            [aoc.parse :as parse]))
+            [aoc.parse :as parse]
+            [aoc.geometry :as geometry]))
 
 (defn parse-line
   [line]
@@ -23,10 +24,6 @@
 
 (def input
   (file/read-lines parse-line "2021/day03.txt"))
-
-(defn transpose
-  [coll]
-  (apply mapv vector coll))
 
 (defn by-frequency-most-common [[d1 f1] [d2 f2]]
   (let [c (compare f2 f1)]
@@ -63,12 +60,12 @@
 (defn part01
   [input]
   (->> input
-       (transpose)
+       (geometry/transpose)
        (power-consumption)))
 
 (defn pos-rate
   [signal coll pos]
-  (let [t (transpose coll)
+  (let [t (geometry/transpose coll)
         el (find-frequency signal (nth t pos))]
     (->> coll
          (filter #(= (nth % pos) el)))))
