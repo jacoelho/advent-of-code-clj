@@ -47,16 +47,17 @@
        (sort comparator)
        (ffirst)))
 
+(defn rate
+  [sorting coll]
+  (->> coll
+       (map (partial find-frequency sorting))
+       (apply str)
+       (parse/binary-string->int)))
+
 (defn power-consumption
   [coll]
-  (let [gamma (->> coll
-                   (map (partial find-frequency by-frequency-most-common))
-                   (apply str)
-                   (parse/binary-string->int))
-        epsilon (->> coll
-                     (map (partial find-frequency by-frequency-less-common))
-                     (apply str)
-                     (parse/binary-string->int))]
+  (let [gamma (rate by-frequency-most-common coll)
+        epsilon (rate by-frequency-less-common coll)]
     (* gamma epsilon)))
 
 (defn part01
@@ -65,22 +66,16 @@
        (transpose)
        (power-consumption)))
 
-(defn rating
+(defn pos-rate
   [signal coll pos]
   (let [t (transpose coll)
         el (find-frequency signal (nth t pos))]
     (->> coll
          (filter #(= (nth % pos) el)))))
 
-(def oxygen
-  (partial rating by-frequency-most-common))
-
-(def co-scrubber
-  (partial rating by-frequency-less-common))
-
-(defn calculate-rating
+(defn rate-consecutive
   ([rating-fn numbers]
-   (calculate-rating rating-fn 0 numbers))
+   (rate-consecutive rating-fn 0 numbers))
 
   ([rating-fn idx numbers]
    (if (= (count numbers) 1)
@@ -90,10 +85,10 @@
           (parse/binary-string->int))
      (recur rating-fn
             (inc idx)
-            (rating-fn numbers idx)))))
+            (pos-rate rating-fn numbers idx)))))
 
 (defn part02
   [input]
-  (let [o2 (calculate-rating oxygen input)
-        co2 (calculate-rating co-scrubber input)]
+  (let [o2 (rate-consecutive by-frequency-most-common input)
+        co2 (rate-consecutive by-frequency-less-common input)]
     (* o2 co2)))
