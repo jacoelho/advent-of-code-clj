@@ -50,7 +50,7 @@
                   (get card :columns)))
     card))
 
-(defn play-card
+(defn play-number
   [round number card]
   (if (bingo? card)
     card
@@ -64,7 +64,7 @@
 (defn play
   [cards numbers]
   (reduce (fn [cards [round number]]
-            (map (partial play-card round number) cards))
+            (map (partial play-number round number) cards))
           cards
           (map-indexed vector numbers)))
 
