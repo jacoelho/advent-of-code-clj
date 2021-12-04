@@ -73,14 +73,16 @@
   (* (:last-called card)
      (reduce + (keys (:numbers card)))))
 
+(defn find-winner
+  [winner-seq-pos cards numbers]
+  (let [cards (play cards numbers)
+        winner (winner-seq-pos (sort-by :round cards))]
+    (score-card winner)))
+
 (defn part01
   [cards numbers]
-  (let [cards (play cards numbers)
-        winner (first (sort-by :round cards))]
-    (score-card winner)))
+  (find-winner first cards numbers))
 
 (defn part02
   [cards numbers]
-  (let [cards (play cards numbers)
-        winner (last (sort-by :round cards))]
-    (score-card winner)))
+  (find-winner last cards numbers))
