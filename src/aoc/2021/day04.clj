@@ -32,8 +32,8 @@
 
 (defn update-card
   [number card]
-  (let [[x y] (get-in card [:numbers number] [-1 -1])]
-    (if (neg? x)
+  (let [[x y] (get-in card [:numbers number])]
+    (if (nil? x)
       card
       (-> card
           (update :numbers dissoc number)
