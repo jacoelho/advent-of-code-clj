@@ -12,20 +12,20 @@
   (file/read-lines parse-line "2021/day05.txt"))
 
 (defn parallel-to-axis?
-  [[a b c d]]
-  (or (= a c)
-      (= b d)))
+  [[x0 y0 x1 y1]]
+  (or (= x0 x1)
+      (= y0 y1)))
 
 (defn points-between
-  [[a b c d]]
-  (let [dx (math/signum (- c a))
-        dy (math/signum (- d b))
-        steps (range (inc (max (* dx (- c a))
-                               (* dy (- d b)))))]
+  [[x0 y0 x1 y1]]
+  (let [dx (math/signum (- x1 x0))
+        dy (math/signum (- y1 y0))
+        steps (range (inc (max (* dx (- x1 x0))
+                               (* dy (- y1 y0)))))]
     (mapv (fn [step]
-            [(+ a (* dx step))
-             (+ b (* dy step))])
-         steps)))
+            [(+ x0 (* dx step))
+             (+ y0 (* dy step))])
+          steps)))
 
 (defn raster-between
   [grid points]
