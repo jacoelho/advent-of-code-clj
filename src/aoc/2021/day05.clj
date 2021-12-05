@@ -1,6 +1,7 @@
 (ns aoc.2021.day05
   (:require [aoc.parse :as parse]
-            [aoc.file :as file]))
+            [aoc.file :as file]
+            [aoc.math :as math]))
 
 (defn parse-line
   [line]
@@ -16,14 +17,15 @@
       (= b d)))
 
 (defn points-between
-  [[a b c d :as points]]
-  (let [dx (if (< c a) -1 1)
-        dy (if (< d b) -1 1)
-        range-x (range a (+ c dx) dx)
-        range-y (range b (+ d dy) dy)]
-    (if (parallel-to-axis? points)
-      (for [x range-x y range-y] [x y])
-      (map vector range-x range-y))))
+  [[a b c d]]
+  (let [dx (math/signum (- c a))
+        dy (math/signum (- d b))
+        steps (range (inc (max (* dx (- c a))
+                               (* dy (- d b)))))]
+    (mapv (fn [step]
+            [(+ a (* dx step))
+             (+ b (* dy step))])
+         steps)))
 
 (defn raster-between
   [grid points]
