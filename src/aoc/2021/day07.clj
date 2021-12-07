@@ -27,6 +27,10 @@
        (map #(sum-to-n (math/abs (- point %))))
        (reduce +)))
 
+(def m-fuel-constant-rate (memoize fuel-constant-rate))
+
+(def m-fuel-linear-rate (memoize fuel-linear-rate))
+
 (defn least-fuel
   [fuel-calc-fn input]
   (->> input
@@ -35,8 +39,8 @@
 
 (defn part01
   [input]
-  (least-fuel fuel-constant-rate input))
+  (least-fuel m-fuel-constant-rate input))
 
 (defn part02
   [input]
-  (least-fuel fuel-linear-rate input))
+  (least-fuel m-fuel-linear-rate input))
