@@ -59,16 +59,16 @@
   [(filter f s) (filter (complement f) s)])
 
 (defn find-easy-digits
-  [mapping raw]
+  [mapping groups]
   (-> mapping
-      (assoc 1 (first (get raw 2)))
-      (assoc 4 (first (get raw 4)))
-      (assoc 7 (first (get raw 3)))
-      (assoc 8 (first (get raw 7)))))
+      (assoc 1 (first (get groups 2)))
+      (assoc 4 (first (get groups 4)))
+      (assoc 7 (first (get groups 3)))
+      (assoc 8 (first (get groups 7)))))
 
 (defn find-digits-6-segments
-  [mapping raw]
-  (let [elements (get raw 6)
+  [mapping groups]
+  (let [elements (get groups 6)
         [[six] xs] (separate #(not (set/subset? (get mapping 1) %)) elements)
         [[zero] [nine]] (separate #(not (set/subset? (get mapping 4) %)) xs)]
     (-> mapping
@@ -77,8 +77,8 @@
         (assoc 9 nine))))
 
 (defn find-digits-5-segments
-  [mapping raw]
-  (let [elements (get raw 5)
+  [mapping groups]
+  (let [elements (get groups 5)
         [[three] xs] (separate #(set/subset? (get mapping 1) %) elements)
         [[five] [two]] (separate #(= 1 (count (set/difference (get mapping 6) %))) xs)]
     (-> mapping
