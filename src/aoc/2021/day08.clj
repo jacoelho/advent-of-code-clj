@@ -41,7 +41,7 @@
 ;; numbers with 6 segments:
 ;; 6 only one not overlapping 1 c segment
 ;; 0 only one not overlapping 4 d segment
-;; 9 is the remeaning one
+;; 9 is the remaining one
 
 ;; remaining
 ;;     digits X X 2 3 X 5 X X X X
