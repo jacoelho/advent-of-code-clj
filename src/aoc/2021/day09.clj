@@ -1,6 +1,7 @@
 (ns aoc.2021.day09
   (:require [aoc.parse :as parse]
-            [aoc.file :as file]))
+            [aoc.file :as file]
+            [clojure.set :as set]))
 
 (defn parse-line
   [line]
@@ -16,48 +17,61 @@
    [8 7 6 7 8 9 6 7 8 9]
    [9 8 9 9 9 6 5 6 7 8]])
 
-(defn coords
-  [grid]
-  (for [x (range (count (first grid)))
-        y (range (count grid))]
-    [x y]))
-
-(def offsets [[0 1]
-              [0 -1]
-              [-1 0]
-              [1 0]])
+(defn map-grid
+  [input]
+  (let [coordinates (for [x (range (count (first input)))
+                          y (range (count input))]
+                      [x y])]
+    (into {} (map (fn [[x y]]
+                    [[x y] (get-in input [y x])])
+                  coordinates))))
 
 (defn neighbours
-  [grid [x0 y0]]
-  (reduce (fn [acc [x1 y1]]
-            (let [y (+ y1 y0)
-                  x (+ x1 x0)
-                  v (get-in grid [y x])]
-              (if v
-                (conj acc [[x y] v])
-                acc)))
-          []
-          offsets))
+  [[x0 y0]]
+  (map (fn [[x1 y1]]
+         (let [y (+ y1 y0)
+               x (+ x1 x0)]
+           [x y]))
+       [[0 1]
+        [0 -1]
+        [-1 0]
+        [1 0]]))
+
+(defn neighbours-values
+  [grid point]
+  (->> point
+       (neighbours)
+       (map grid)
+       (remove nil?)))
 
 (defn low-point?
-  [grid [x y]]
-  (let [v (get-in grid [y x])
-        adjacent (map second (neighbours grid [x y]))]
+  [grid point]
+  (let [v (get grid point)
+        adjacent (neighbours-values grid point)]
     (< v (apply min adjacent))))
 
 (defn low-points
   [grid]
-  (reduce (fn [acc [x y]]
-            (if (low-point? grid [x y])
-              (conj acc (get-in grid [y x]))
+  (reduce (fn [acc [point v]]
+            (if (low-point? grid point)
+              (conj acc v)
               acc))
           []
-          (coords grid)))
+          grid))
 
-;; 550
+(defn remove-height-9
+  [grid]
+  (reduce-kv (fn [m k v]
+               (if (< v 9)
+                 (assoc m k v)
+                 m))
+             {}
+             grid))
+
 (defn part01
   [input]
   (->> input
+       (map-grid)
        (low-points)
        (map inc)
        (reduce +)))
@@ -65,11 +79,16 @@
 (defn basin-neighbours
   [grid point]
   (->> point
-      (neighbours grid)
-      (filter #(< (second %) 9))
-      (map first)))
+       (neighbours)
+       (reduce (fn [acc point]
+                 (let [v (get grid point)]
+                   (if (and (number? v)
+                            (< v 9))
+                     (conj acc point)
+                     acc)))
+               [])))
 
-(defn basin
+(defn explore-basin
   [grid {:keys [explore visited]}]
   (if (seq explore)
     (recur grid
@@ -84,27 +103,29 @@
                    explore))
     visited))
 
-;; 1100682
+(defn basins
+  [grid]
+  (->> grid
+       (reduce (fn [acc [k _]]
+                 (if ((get acc :visited) k)
+                   acc
+                   (let [basin (explore-basin grid {:visited #{k}
+                                                    :explore (basin-neighbours grid k)})]
+                     (-> acc
+                         (update :visited set/union basin)
+                         (update :basins conj basin)))))
+               {:visited #{}
+                :basins  []})
+       (:basins)))
+
 (defn part02
   [input]
   (->> input
-       (coords)
-       (filter (fn [[x y]] (not= (get-in input [y x]) 9)))
-       (map #(basin input {:visited (set [%])
-                           :explore (basin-neighbours input %)}))
+       (map-grid)
+       (remove-height-9)
+       (basins)
        (sort-by count >)
-       (distinct)
        (take 3)
        (map count)
        (reduce *)))
 
-(time (part02 input))
-
-(defn foo
-  [grid input]
-  (->> input
-       (map (fn [[x y]]
-              [[x y] (get-in grid [y x])]))))
-
-(foo example (basin example {:visited (set [[9 4]])
-                             :explore (basin-neighbours example [9 4])}))
