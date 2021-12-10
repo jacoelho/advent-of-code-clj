@@ -63,6 +63,7 @@
         (map analyse)
         (keep (fn [m]
                 (get m :unmatched)))
-        (map (partial map opens))
-        (map completion-score)
+        (map (comp
+               completion-score
+               (partial map opens)))
         (middle)))
