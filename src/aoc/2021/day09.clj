@@ -128,4 +128,3 @@
        (take 3)
        (map count)
        (reduce *)))
-
