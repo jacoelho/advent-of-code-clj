@@ -1,5 +1,9 @@
 (ns aoc.collections)
 
+(defn map-invert
+  [m]
+  (reduce (fn [m [k v]] (assoc m v k)) {} m))
+
 (defn first-duplicate
   [coll]
   (loop [seen #{}

@@ -1,43 +1,9 @@
 (ns aoc.2021.day10
-  (:require [aoc.file :as file]))
+  (:require [aoc.file :as file]
+            [aoc.collections :as collections]))
 
 (def input
   (file/read-lines "2021/day10.txt"))
-
-(def closes
-  {\) \(
-   \] \[
-   \} \{
-   \> \<})
-
-(defn corrupted?
-  [line]
-  (loop [input line
-         unclosed '()]
-    (let [[x & xs] input]
-      (if (nil? x)
-        nil
-        (case x
-          (\) \] \} \>)
-          (if (= (closes x)
-                 (first unclosed))
-            (recur xs (rest unclosed))
-            x)
-
-          (\( \[ \{ \<)
-          (recur xs (conj unclosed x)))))))
-
-;; 370407
-(defn part01
-  [input]
-  (->> input
-       (map corrupted?)
-       (remove nil?)
-       (map {\) 3
-             \] 57
-             \} 1197
-             \> 25137})
-       (reduce +)))
 
 (def opens
   {\( \)
@@ -45,22 +11,37 @@
    \{ \}
    \< \>})
 
-(defn incomplete?
-  [line]
-  (loop [input line
-         unclosed '()]
-    (let [[x & xs] input]
-      (if (nil? x)
-        (when (not (empty? unclosed))
-          (map opens unclosed))
-        (case x
-          (recur xs (case x
-                      (\) \] \} \>)
-                      (rest unclosed)
-                      (\( \[ \{ \<)
-                      (conj unclosed x))))))))
+(def closes
+  (collections/map-invert opens))
 
-(defn score-completion
+(defn analyse
+  [line]
+  (reduce (fn [{:keys [unmatched]} el]
+            (case el
+              (\) \] \} \>)
+              (if (not= (closes el)
+                        (first unmatched))
+                (reduced {:corrupted el})
+                {:unmatched (rest unmatched)})
+
+              (\( \[ \{ \<)
+              {:unmatched (conj unmatched el)}))
+          {:unmatched '()}
+          line))
+
+(defn part01
+  [input]
+  (->> input
+       (map analyse)
+       (keep (fn [m]
+               (get m :corrupted)))
+       (map {\) 3
+             \] 57
+             \} 1197
+             \> 25137})
+       (reduce +)))
+
+(defn completion-score
   [line]
   (reduce (fn [acc el]
             (+ (* acc 5)
@@ -71,22 +52,13 @@
           0
           line))
 
-(->> input
-     (remove corrupted?)
-     (map incomplete?)
-     (mapcat {\) 1
-              \] 2
-              \} 3
-              \> 4})
-     (reduce +))
-
-;; 3249889609
 (defn part02
   [input]
   (let [completions (->> input
-                         (remove corrupted?)
-                         (map incomplete?)
-                         (map score-completion)
+                         (map analyse)
+                         (keep (fn [m]
+                                 (get m :unmatched)))
+                         (map (partial map opens))
+                         (map completion-score)
                          (sort))]
     (nth completions (quot (count completions) 2))))
-
