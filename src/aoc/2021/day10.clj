@@ -52,13 +52,17 @@
           0
           line))
 
+(defn middle
+  [input]
+  (nth (sort input)
+       (quot (count input) 2)))
+
 (defn part02
   [input]
-  (let [completions (->> input
-                         (map analyse)
-                         (keep (fn [m]
-                                 (get m :unmatched)))
-                         (map (partial map opens))
-                         (map completion-score)
-                         (sort))]
-    (nth completions (quot (count completions) 2))))
+  (->> input
+        (map analyse)
+        (keep (fn [m]
+                (get m :unmatched)))
+        (map (partial map opens))
+        (map completion-score)
+        (middle)))
