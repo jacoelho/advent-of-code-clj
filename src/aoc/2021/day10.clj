@@ -1,25 +1,25 @@
 (ns aoc.2021.day10
-  (:require [aoc.file :as file]
-            [aoc.collections :as collections]))
+  (:require [aoc.file :as file]))
 
 (def input
   (file/read-lines "2021/day10.txt"))
 
-(def opens
+(def complement-delimiter
   {\( \)
    \[ \]
    \{ \}
-   \< \>})
-
-(def closes
-  (collections/map-invert opens))
+   \< \>
+   \) \(
+   \] \[
+   \} \{
+   \> \<})
 
 (defn analyse
   [line]
   (reduce (fn [{:keys [unmatched]} el]
             (case el
               (\) \] \} \>)
-              (if (not= (closes el)
+              (if (not= (complement-delimiter el)
                         (first unmatched))
                 (reduced {:corrupted el})
                 {:unmatched (rest unmatched)})
@@ -33,8 +33,7 @@
   [input]
   (->> input
        (map analyse)
-       (keep (fn [m]
-               (get m :corrupted)))
+       (keep #(get % :corrupted))
        (map {\) 3
              \] 57
              \} 1197
@@ -61,9 +60,8 @@
   [input]
   (->> input
         (map analyse)
-        (keep (fn [m]
-                (get m :unmatched)))
+        (keep #(get % :unmatched))
         (map (comp
                completion-score
-               (partial map opens)))
+               (partial map complement-delimiter)))
         (middle)))
