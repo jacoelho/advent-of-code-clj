@@ -51,8 +51,7 @@
   (->> input
        (iterate step)
        (take 101)
-       (mapcat vals)
-       (filter zero?)
+       (mapcat #(filter zero? (vals %)))
        (count)))
 
 (defn part02
