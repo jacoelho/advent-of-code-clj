@@ -78,6 +78,6 @@
         visits (small-caves-visit-allowance input 1)]
     (->> small-caves
          (mapcat #(explore input (update visits % inc)))
-         (distinct)
+         (set)
          (count))))
 
