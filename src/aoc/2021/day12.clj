@@ -51,15 +51,15 @@
   (filter #(< 0 (get visited (:end %) 1)) (get caves cur)))
 
 (defn explore'
-  [caves visited path current-cave]
-  (let [destinations (caves-available visited current-cave caves)]
+  [caves visit-allowance path current-cave]
+  (let [destinations (caves-available visit-allowance current-cave caves)]
     (cond
       (= current-cave "end") (clojure.string/join "," (conj path current-cave))
       (empty? destinations) nil
       :else (map #(explore' caves
                             (if (small-cave? current-cave)
-                              (update visited current-cave dec)
-                              visited)
+                              (update visit-allowance current-cave dec)
+                              visit-allowance)
                             (conj path current-cave)
                             (:end %))
                  destinations))))
