@@ -57,17 +57,16 @@
       (= current-cave "end") (clojure.string/join "," (conj path current-cave))
       (empty? destinations) nil
       :else (map #(explore' caves
-                            (case (categorise-cave current-cave)
-                              :start (assoc visited current-cave 0)
-                              :small (update visited current-cave dec)
-                              :big visited)
+                            (if (small-cave? current-cave)
+                              (update visited current-cave dec)
+                              visited)
                             (conj path current-cave)
                             (:end %))
                  destinations))))
 
 (defn explore
   [input m]
-  (remove nil? (flatten (explore' input (assoc m "start" 1) [] "start"))))
+  (remove nil? (flatten (explore' input (assoc m "start" 0) [] "start"))))
 
 (defn part01
   [input]
