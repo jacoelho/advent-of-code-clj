@@ -38,6 +38,7 @@
   (= :small (categorise-cave cave)))
 
 (defn small-caves-visit-allowance
+  "Returns a map with number of visits possible for each small cave"
   [input visits]
   (into {}
         (mapv vector
@@ -45,6 +46,7 @@
               (repeat visits))))
 
 (defn caves-available
+  "Returns caves we are still allowed to visit"
   [visited cur caves]
   (filter #(< 0 (get visited (:end %) 1)) (get caves cur)))
 
