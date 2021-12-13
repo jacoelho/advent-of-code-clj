@@ -36,11 +36,10 @@
 
 
 (defn print-map-grid [grid]
-  (let [[max-x max-y] (reduce (fn [[mx my] [[y x] _]]
-                                [(max mx x) (max my y)])
-                              [0 0]
-                              grid)]
-    (doseq [x (range (inc max-x))]
-      (doseq [y (range (inc max-y))]
-        (print (get grid [y x] \_)))
+  (let [keys' (keys grid)
+        max-x (inc (apply max (map first keys')))
+        max-y (inc (apply max (map second keys')))]
+    (doseq [y (range max-y)]
+      (doseq [x (range max-x)]
+        (print (get grid [x y] \_)))
       (print "\n"))))
