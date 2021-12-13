@@ -36,7 +36,7 @@
 
 (defn offset
   [reference value]
-  (- reference (- value reference)))
+  (- (* 2 reference) value))
 
 (defn fold
   [grid [axis value]]

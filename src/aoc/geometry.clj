@@ -35,7 +35,8 @@
              [[x y] v])))
 
 
-(defn print-map-grid [grid]
+(defn print-map-grid
+  [grid]
   (let [keys' (keys grid)
         max-x (inc (apply max (map first keys')))
         max-y (inc (apply max (map second keys')))]
