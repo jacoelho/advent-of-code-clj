@@ -34,3 +34,13 @@
                  [x v] (map-indexed vector row)]
              [[x y] v])))
 
+
+(defn print-map-grid [grid]
+  (let [[max-x max-y] (reduce (fn [[mx my] [[y x] _]]
+                                [(max mx x) (max my y)])
+                              [0 0]
+                              grid)]
+    (doseq [x (range (inc max-x))]
+      (doseq [y (range (inc max-y))]
+        (print (get grid [y x] \_)))
+      (print "\n"))))

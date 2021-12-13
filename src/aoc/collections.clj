@@ -16,6 +16,12 @@
     (reduce-kv (fn [m k v] (assoc! m k (f v)))
                (transient (empty m)) m)))
 
+(defn map-keys
+  [f m]
+  (persistent!
+    (reduce-kv (fn [m k v] (assoc! m (f k) v))
+               (transient (empty m)) m)))
+
 (defn first-duplicate
   [coll]
   (loop [seen #{}
