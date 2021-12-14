@@ -32,7 +32,9 @@
   [original-template polymer]
   (reduce (fn [acc [[a _] freq]]
             (update acc a (fnil + 0) freq))
-          {(last original-template) 1}
+          (-> {}
+              (update (first original-template) (fnil inc 0))
+              (update (last original-template) (fnil inc 0)))
           polymer))
 
 (defn grow-polymer
