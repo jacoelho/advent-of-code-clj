@@ -22,6 +22,16 @@
     (reduce-kv (fn [m k v] (assoc! m (f k) v))
                (transient (empty m)) m)))
 
+(defn remove-keys
+  [pred m]
+  (persistent!
+    (reduce-kv (fn [m k v]
+                 (if (pred k)
+                   m
+                   (assoc! m k v)))
+               (transient (empty m)) m)))
+
+
 (defn first-duplicate
   [coll]
   (loop [seen #{}
