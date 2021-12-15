@@ -61,7 +61,7 @@
              (doseq [vertex (->> coordinate
                                  (neighbours)
                                  (collections/remove-keys distances)
-                                 (map (fn [[k v]] [k (+ v distance)]))
+                                 (collections/map-vals #(+ distance %))
                                  (seq))]
                (.add queue vertex))
              (if (goal? coordinate)
