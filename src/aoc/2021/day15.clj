@@ -32,33 +32,42 @@
 
 (defn neighbours-risk
   [grid pos]
-  (reduce (fn [acc pos]
-            (if-let [v (get grid pos)]
-              (conj acc [v pos])
-              acc))
-          []
-          (neighbours pos)))
+  (persistent! (reduce (fn [acc pos]
+                         (if-let [v (get grid pos)]
+                           (assoc! acc pos v)
+                           acc))
+                       (transient {})
+                       (neighbours pos))))
 
-(defrecord Vertex [distance coordinate]
-  Comparable
-  (compareTo [this other] (.compareTo (:distance this) (:distance other))))
+(def vertex-comparator
+  (reify java.util.Comparator
+    (compare
+      [_ o1 o2]
+      (compare (nth o1 1) (nth o2 1)))
+    (equals
+      [o1 o2]
+      (= o1 o2))))
 
 (defn dijkstra
   ([start neighbours goal?]
-   (let [queue (PriorityQueue. [(->Vertex 0 start)])]
+   (let [queue (doto
+                 (PriorityQueue. vertex-comparator)
+                 (.add [start 0]))]
      (loop [distances {}]
-       (let [visit (.poll queue)]
-         (if (nil? visit)
-           distances
-           (if (contains? distances (:coordinate visit))
-             (recur distances)
-             (let [new-distances (assoc distances (:coordinate visit) (:distance visit))]
-               (doseq [[distance coordinate] (neighbours (:coordinate visit))]
-                 (when-not (contains? distances coordinate)
-                   (.add queue (->Vertex (+ (:distance visit) distance) coordinate))))
-               (if (goal? (:coordinate visit))
-                 new-distances
-                 (recur new-distances))))))))))
+       (if-let [[coordinate distance] (.poll queue)]
+         (if (contains? distances coordinate)
+           (recur distances)
+           (let [new-distances (assoc distances coordinate distance)]
+             (doseq [vertex (->> coordinate
+                                 (neighbours)
+                                 (collections/remove-keys distances)
+                                 (map (fn [[k v]] [k (+ v distance)]))
+                                 (seq))]
+               (.add queue vertex))
+             (if (goal? coordinate)
+               new-distances
+               (recur new-distances))))
+         distances)))))
 
 (defn part01
   [input]
@@ -83,4 +92,3 @@
   (let [input' (expand-grid 5 input)
         goal (bottom-right-corner input')]
     (get (dijkstra [0 0] (partial neighbours-risk input') #(= % goal)) goal)))
-
