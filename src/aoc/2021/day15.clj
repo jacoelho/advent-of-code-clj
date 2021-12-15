@@ -3,7 +3,7 @@
             [aoc.geometry :as geometry]
             [aoc.parse :as parse]
             [aoc.collections :as collections])
-  (:import (java.util PriorityQueue)))
+  (:import (java.util PriorityQueue Comparator)))
 
 (defn parse-line
   [line]
@@ -40,10 +40,10 @@
                        (neighbours pos))))
 
 (def vertex-comparator
-  (reify java.util.Comparator
+  (reify Comparator
     (compare
       [_ o1 o2]
-      (compare (nth o1 1) (nth o2 1)))
+      (Integer/compare (nth o1 1) (nth o2 1)))
     (equals
       [o1 o2]
       (= o1 o2))))
@@ -51,28 +51,29 @@
 (defn dijkstra
   ([start neighbours goal?]
    (let [queue (doto
-                 (PriorityQueue. vertex-comparator)
+                 (PriorityQueue. ^Comparator vertex-comparator)
                  (.add [start 0]))]
      (loop [distances {}]
-       (if-let [[coordinate distance] (.poll queue)]
-         (if (contains? distances coordinate)
-           (recur distances)
-           (let [new-distances (assoc distances coordinate distance)]
-             (doseq [vertex (->> coordinate
-                                 (neighbours)
-                                 (collections/remove-keys distances)
-                                 (collections/map-vals #(+ distance %))
-                                 (seq))]
-               (.add queue vertex))
-             (if (goal? coordinate)
-               new-distances
-               (recur new-distances))))
+       (if-let [[coordinate distance :as vertex] (.poll queue)]
+         (cond
+           (goal? coordinate) (conj distances vertex)
+           (contains? distances coordinate) (recur distances)
+           :else (do
+                   (doseq [vertex (->> coordinate
+                                       (neighbours)
+                                       (collections/remove-keys distances)
+                                       (collections/map-vals #(+ distance %))
+                                       (seq))]
+                     (.add queue vertex))
+                   (recur (conj distances vertex))))
          distances)))))
 
 (defn part01
   [input]
   (let [goal (bottom-right-corner input)]
     (get (dijkstra [0 0] (partial neighbours-risk input) #(= % goal)) goal)))
+
+(part01 example)
 
 (defn expand-grid
   [factor grid]
