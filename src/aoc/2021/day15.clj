@@ -73,8 +73,6 @@
   (let [goal (bottom-right-corner input)]
     (get (dijkstra [0 0] (partial neighbours-risk input) #(= % goal)) goal)))
 
-(part01 example)
-
 (defn expand-grid
   [factor grid]
   (let [[w h] (map inc (bottom-right-corner grid))]
