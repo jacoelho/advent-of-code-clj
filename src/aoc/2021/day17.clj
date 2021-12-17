@@ -15,20 +15,15 @@
 (def input
   (first (file/read-lines parse-line "2021/day17.txt")))
 
-(defn hit?
-  [[[x0 y0] [x1 y1]] [px py]]
-  (and (<= x0 px x1)
-       (<= y0 py y1)))
+(defn projectile-step
+  [[[x y] [dx dy]]]
+  [[(+ x dx) (+ y dy)]
+   [(max 0 (dec dx)) (dec dy)]])
 
 (defn passed?
   [[[_ y0] [x1 _]] [px py]]
   (or (< x1 px)
       (< py y0)))
-
-(defn projectile-step
-  [[[x y] [dx dy]]]
-  [[(+ x dx) (+ y dy)]
-   [(max 0 (dec dx)) (dec dy)]])
 
 (defn trajectory
   [area speed]
@@ -37,13 +32,18 @@
        (take-while (fn [[pos]]
                      (not (passed? area pos))))))
 
+(defn hit?
+  [[[x0 y0] [x1 y1]] [px py]]
+  (and (<= x0 px x1)
+       (<= y0 py y1)))
+
 (defn trajectory-hits?
   [area trajectory-points]
   (some (fn [[pos]]
           (hit? area pos))
         trajectory-points))
 
-(defn speeds
+(defn starting-velocities
   [[[_ y0] [x1 _]]]
   (for [x (range (inc x1))
         y (range y0 (* y0 -1))]
@@ -52,7 +52,7 @@
 (defn part01
   [input]
   (->> input
-       (speeds)
+       (starting-velocities)
        (map (partial trajectory input))
        (filter (partial trajectory-hits? input))
        (mapcat (partial map (fn [[[_ y]]] y)))
@@ -61,7 +61,7 @@
 (defn part02
   [input]
   (->> input
-       (speeds)
+       (starting-velocities)
        (map (partial trajectory input))
        (filter (partial trajectory-hits? input))
        (count)))
