@@ -44,9 +44,9 @@
         trajectory-points))
 
 (defn speeds
-  [[[_] [x1 _]]]
+  [[[_ y0] [x1 _]]]
   (for [x (range (inc x1))
-        y (range (* x1 -1) (inc x1))]
+        y (range y0 (* y0 -1))]
     [x y]))
 
 (defn part01
