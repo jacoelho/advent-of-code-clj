@@ -44,41 +44,45 @@
        (every? number? (z/node zipper))
        (= 4 (depth zipper))))
 
-(defn explode
-  [coll]
-  (loop [zipper (z/vector-zip coll)]
-    (when-not (z/end? zipper)
-      (if (explodes? zipper)
-        (let [[left right] (z/node zipper)]
-          (-> zipper
-              (z/replace 0)
-              ((fn [zipper]
-                 (if-let [leaf (left-leaf zipper)]
-                   (-> leaf
-                       (z/edit + left)
-                       (right-leaf))
-                   zipper)))
-              ((fn [zipper]
-                 (if-let [leaf (right-leaf zipper)]
-                   (z/edit leaf + right)
-                   zipper)))
-              (z/root)))
-        (recur (z/next zipper))))))
-
-(defn leftmost-split
-  [coll]
+(defn update-snail-number
+  [coll pred f]
   (when-let [found (->> coll
                         (z/vector-zip)
                         (iterate z/next)
                         (take-while #(not (z/end? %)))
-                        (some (fn [loc]
-                                (let [node (z/node loc)]
-                                  (when (and (number? node)
-                                             (< 9 node))
-                                    loc)))))]
-    (-> found
-        (z/replace (split (z/node found)))
-        (z/root))))
+                        (some (fn [pos]
+                                (when (pred pos)
+                                  pos))))]
+    (z/root (f found))))
+
+(defn split?
+  [zipper]
+  (let [node (z/node zipper)]
+    (and (not (z/branch? zipper))
+         (number? node)
+         (< 9 node))))
+
+(defn leftmost-split
+  [coll]
+  (update-snail-number coll split? #(z/replace % (split (z/node %)))))
+
+(defn explode
+  [coll]
+  (update-snail-number coll explodes?
+                       (fn [zipper]
+                         (let [[left right] (z/node zipper)]
+                           (-> zipper
+                               (z/replace 0)
+                               ((fn [zipper]
+                                  (if-let [leaf (left-leaf zipper)]
+                                    (-> leaf
+                                        (z/edit + left)
+                                        (right-leaf))
+                                    zipper)))
+                               ((fn [zipper]
+                                  (if-let [leaf (right-leaf zipper)]
+                                    (z/edit leaf + right)
+                                    zipper))))))))
 
 (defn reduce-snail-number
   [coll]
