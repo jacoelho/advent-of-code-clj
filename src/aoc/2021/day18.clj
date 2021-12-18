@@ -6,13 +6,18 @@
 (def input
   (file/read-lines edn/read-string "2021/day18.txt"))
 
+(defn zipper-find
+  [iterator pred zipper]
+  (->> zipper
+       (iterator)
+       (iterate iterator)
+       (take-while #(not (or (nil? %)
+                             (z/end? %))))
+       (some #(when (pred %) %))))
+
 (defn update-snail-number
   [coll pred f]
-  (when-let [found (->> coll
-                        (z/vector-zip)
-                        (iterate z/next)
-                        (take-while #(not (z/end? %)))
-                        (some #(when (pred %) %)))]
+  (when-let [found (zipper-find z/next pred (z/vector-zip coll))]
     (z/root (f found))))
 
 (defn split?
@@ -35,20 +40,11 @@
   (comp number?
         z/node))
 
-(defn find-leaf
-  [iterator zipper]
-  (->> zipper
-       (iterator)
-       (iterate iterator)
-       (take-while #(not (or (nil? %)
-                             (z/end? %))))
-       (some #(when (leaf? %) %))))
-
 (def left-leaf
-  (partial find-leaf z/prev))
+  (partial zipper-find z/prev leaf?))
 
 (def right-leaf
-  (partial find-leaf z/next))
+  (partial zipper-find z/next leaf?))
 
 (def depth
   (comp count
