@@ -20,12 +20,13 @@
   (when-let [found (zipper-find z/next pred (z/vector-zip coll))]
     (z/root (f found))))
 
-(defn split?
-  [zipper]
-  (let [node (z/node zipper)]
-    (and (not (z/branch? zipper))
-         (number? node)
-         (< 9 node))))
+(def leaf?
+  (comp number?
+        z/node))
+
+(def greater-than-nine
+  (comp #(< 9 %)
+        z/node))
 
 (defn split
   [n]
@@ -34,11 +35,8 @@
 
 (defn leftmost-split
   [coll]
-  (update-snail-number coll split? #(z/replace % (split (z/node %)))))
-
-(def leaf?
-  (comp number?
-        z/node))
+  (update-snail-number coll #(and (leaf? %)
+                                  (greater-than-nine %)) #(z/replace % (split (z/node %)))))
 
 (def left-leaf
   (partial zipper-find z/prev leaf?))
