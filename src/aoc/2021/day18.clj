@@ -65,7 +65,7 @@
   (if-let [leaf (left-leaf zipper)]
     (-> leaf
         (z/edit + value)
-        (right-leaf))
+        (right-leaf)) ;; go back to zipper
     zipper))
 
 (defn update-right-leaf
@@ -73,7 +73,7 @@
   (if-let [leaf (right-leaf zipper)]
     (-> leaf
         (z/edit + value)
-        (left-leaf))
+        (left-leaf)) ;; go back to zipper
     zipper))
 
 (defn explode
@@ -112,7 +112,7 @@
 
 (defn part02
   [input]
-  (apply max
+  (reduce max
          (for [a input
                b input
                :when (not= a b)]
