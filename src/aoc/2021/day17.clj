@@ -65,4 +65,3 @@
        (map (partial trajectory input))
        (filter (partial trajectory-hits? input))
        (count)))
-
