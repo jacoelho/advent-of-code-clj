@@ -4,8 +4,10 @@
 
 (deftest part01
   (testing "inputs"
-    (is (= 79 (day19/part01 day19/example)))))
+    (is (= 79 (day19/part01 day19/example)))
+    (is (= 320 (day19/part01 day19/input)))))
 
 (deftest part02
   (testing "inputs"
-    (is (= 3621 (day19/part02 day19/example)))))
+    (is (= 3621 (day19/part02 day19/example)))
+    (is (= 9655 (day19/part02 day19/input)))))

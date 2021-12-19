@@ -91,9 +91,9 @@
 (defn find-scanner
   [scanner-left scanner-right]
   (->> (range 24)
-       (map #(map (partial rotation %) scanner-right))
+       (map #(set (map (partial rotation %) scanner-right)))
        (some (fn [rotations]
-               (let [candidate (set rotations)
+               (let [candidate rotations
                      product   (comb/cartesian-product scanner-left candidate)]
                  (some (fn [difference]
                          (let [moved (set (map (partial plus difference) candidate))]
@@ -103,9 +103,9 @@
 
 (defn align
   [scanners]
-  (loop [data {:scanners [(->point 0 0 0)]
-                 :beacons  (first scanners)}
-         queue  (into PersistentQueue/EMPTY (rest scanners))]
+  (loop [data  {:scanners [(->point 0 0 0)]
+                :beacons  (first scanners)}
+         queue (into PersistentQueue/EMPTY (rest scanners))]
     (if (seq queue)
       (if-let [[scanner found] (find-scanner (:beacons data) (peek queue))]
         (recur (-> data
