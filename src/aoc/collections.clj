@@ -31,6 +31,15 @@
                    (assoc! m k v)))
                (transient (empty m)) m)))
 
+(defn remove-vals
+  [pred m]
+  (persistent!
+    (reduce-kv (fn [m k v]
+                 (if (pred v)
+                   m
+                   (assoc! m k v)))
+               (transient (empty m)) m)))
+
 
 (defn first-duplicate
   [coll]
