@@ -34,7 +34,7 @@
    [(inc x-max) (inc y-max)]])
 
 (defn count-on-pixels
-  [{:keys [image]}]
+  [image]
   (->> image
        (vals)
        (filter #{1})
@@ -48,25 +48,26 @@
        (reduce #(+ (* 2 %) %2) (long 0))))
 
 (defn enhance
-  [{:keys [algorithm image]} empty-value]
+  [algorithm image empty-value]
   (let [[[x-min y-min] [x-max y-max]] (padding (corners image))]
-    (reduce (fn [output pixel]
-              (let [idx (image-area image pixel empty-value)
-                    res (nth algorithm idx)]
-                (assoc-in output [:image pixel] res)))
-            {:algorithm algorithm}
-            (for [x (range x-min (inc x-max))
-                  y (range y-min (inc y-max))]
-              [x y]))))
+    (persistent!
+      (reduce (fn [output pixel]
+                (let [idx (image-area image pixel empty-value)
+                      res (nth algorithm idx)]
+                  (assoc! output pixel res)))
+              (transient {})
+              (for [x (range x-min (inc x-max))
+                    y (range y-min (inc y-max))]
+                [x y])))))
 
 (defn enhance-n
-  [n grid]
+  [n {:keys [algorithm image]}]
   (let [empty-values [0 1]]
-    (loop [grid grid
+    (loop [image image
            count 0]
       (if (= count n)
-        grid
-        (recur (enhance grid (nth empty-values (rem count 2)))
+        image
+        (recur (enhance algorithm image (nth empty-values (rem count 2)))
                (inc count))))))
 
 (defn part01
