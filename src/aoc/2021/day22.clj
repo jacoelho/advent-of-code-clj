@@ -37,10 +37,12 @@
 (defn sum
   [coll]
   (reduce (fn [cubes [op :as c]]
-            (let [intersections (->> cubes
-                                     (map (fn [[op' :as other]]
-                                            (intersect (not op') c other)))
-                                     (remove nil?))]
+            (let [intersections (reduce (fn [acc [op' :as other]]
+                                          (if-let [v (intersect (not op') c other)]
+                                            (conj acc v)
+                                            acc))
+                                        []
+                                        cubes)]
               (into cubes (if op
                             (conj intersections c)
                             intersections))))
