@@ -1,10 +1,29 @@
-(ns aoc.geometry)
+(ns aoc.geometry
+  (:require [aoc.math :as math]))
 
 (defn manhattan-distance
   ([a]
    (manhattan-distance (vec (repeat (count a) 0)) a))
   ([a b]
    (reduce + (map (comp #(Math/abs %) -) a b))))
+
+(defn points-between
+  ([[x0 x1 :as points]]
+   (when (seq points)
+     (let [dx    (math/signum (- x1 x0))
+           steps (range (inc (* dx (- x1 x0))))]
+       (mapv (fn [step]
+               (+ x0 (* dx step)))
+             steps))))
+  ([[x0 y0] [x1 y1]]
+   (let [dx    (math/signum (- x1 x0))
+         dy    (math/signum (- y1 y0))
+         steps (range (inc (max (* dx (- x1 x0))
+                                (* dy (- y1 y0)))))]
+     (mapv (fn [step]
+             [(+ x0 (* dx step))
+              (+ y0 (* dy step))])
+           steps))))
 
 (defn transpose
   [coll]
