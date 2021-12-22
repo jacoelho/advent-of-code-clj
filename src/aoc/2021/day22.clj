@@ -36,37 +36,37 @@
 
 (defn sum
   [coll]
-  (reduce (fn [cubes [op :as c]]
-            (let [intersections (reduce (fn [acc [op' :as other]]
-                                          (if-let [v (intersect (not op') c other)]
+  (reduce (fn [cubes [turn :as cube]]
+            (let [intersections (reduce (fn [acc [turn' :as other-cube]]
+                                          (if-let [v (intersect (not turn') cube other-cube)]
                                             (conj acc v)
                                             acc))
                                         []
                                         cubes)]
-              (into cubes (if op
-                            (conj intersections c)
+              (into cubes (if turn
+                            (conj intersections cube)
                             intersections))))
           []
           coll))
 
 (defn volume
-  [cube-min cube-max]
+  [[_ cube-min cube-max]]
   (->> (mapv (comp inc -) cube-max cube-min)
        (reduce *)))
 
 (defn volume-all
   [cubes]
   (->> cubes
-       (map (fn [[op cube-min cube-max]]
-              (* (volume cube-min cube-max) (if op 1 -1))))
+       (map (fn [[turn :as cube]]
+              (* (volume cube) (if turn 1 -1))))
        (reduce + 0)))
 
 (defn part01
   [input]
   (let [area [true [-50 -50 -50] [50 50 50]]]
     (->> input
-         (filter (fn [[op :as c]]
-                   (intersect op c area)))
+         (filter (fn [[turn :as cube]]
+                   (intersect turn cube area)))
          (sum)
          (volume-all))))
 
