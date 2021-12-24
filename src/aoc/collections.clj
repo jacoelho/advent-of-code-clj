@@ -40,6 +40,14 @@
                    (assoc! m k v)))
                (transient (empty m)) m)))
 
+(defn select-vals
+  [pred m]
+  (persistent!
+    (reduce-kv (fn [m k v]
+                 (if (pred v)
+                   (assoc! m k v)
+                   m))
+               (transient (empty m)) m)))
 
 (defn first-duplicate
   [coll]
