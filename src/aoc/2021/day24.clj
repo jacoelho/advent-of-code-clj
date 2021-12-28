@@ -14,11 +14,11 @@
        (file/read-lines parse-line)
        (partition 18)
        (mapv (fn [block]
-              ;; magic constants positions deducted for inspecting the input
-              (let [a (nth block 4)
-                    b (nth block 5)
-                    c (nth block 15)]
-                (mapv #(nth % 2) [a b c]))))))
+               ;; magic constants positions deducted for inspecting the input
+               (let [a (nth block 4)
+                     b (nth block 5)
+                     c (nth block 15)]
+                 (mapv #(nth % 2) [a b c]))))))
 
 (defn step [z input q a b]
   (if (= input (+ a (mod z 26)))

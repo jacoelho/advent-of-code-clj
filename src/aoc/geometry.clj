@@ -53,13 +53,21 @@
                  [x v] (map-indexed vector row)]
              [[x y] v])))
 
-
-(defn print-map-grid
+(defn map-grid-corners
   [grid]
   (let [keys' (keys grid)
-        max-x (inc (apply max (map first keys')))
-        max-y (inc (apply max (map second keys')))]
-    (doseq [y (range max-y)]
-      (doseq [x (range max-x)]
-        (print (get grid [x y] \_)))
-      (print "\n"))))
+        [x-min x-max] (apply (juxt min max) (map first keys'))
+        [y-min y-max] (apply (juxt min max) (map second keys'))]
+    [[x-min y-min] [x-max y-max]]))
+
+(defn print-map-grid
+  ([grid]
+   (print-map-grid grid \_))
+  ([grid empty-char]
+   (let [keys' (keys grid)
+         max-x (inc (apply max (map first keys')))
+         max-y (inc (apply max (map second keys')))]
+     (doseq [y (range max-y)]
+       (doseq [x (range max-x)]
+         (print (get grid [x y] empty-char)))
+       (print "\n")))))
