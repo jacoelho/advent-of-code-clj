@@ -30,7 +30,7 @@
                  grid
                  (update grid neighbour inc)))
              (assoc grid pos 0)
-             (geometry/neighbours pos))
+             (geometry/neighbours8 pos))
      grid)))
 
 (defn flashed-octopus

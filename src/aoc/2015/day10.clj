@@ -1,9 +1,9 @@
 (ns aoc.2015.day10
   (:require
-   [aoc.math :as math]))
+    [aoc.convert :as convert]))
 
-(def input 
-  (math/long->digits 1321131112))
+(def input
+  (convert/long->digits 1321131112))
 
 (defn look-and-say-one
   [col]

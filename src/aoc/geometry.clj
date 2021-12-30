@@ -33,14 +33,17 @@
   [rows columns value]
   (vec (repeat columns (vec (repeat rows value)))))
 
-(def neighbour-offsets
-  [[-1 -1] [0 -1] [1 -1]
-   [-1 0] [1 0]
-   [-1 1] [0 1] [1 1]])
-
-(defn neighbours
+(defn neighbours8
+  "The eight neighbors (with diagonals)."
   [point]
-  (mapv #(mapv + point %) neighbour-offsets))
+  (mapv #(mapv + point %) [[-1 -1] [0 -1] [1 -1]
+                           [-1 0] [1 0]
+                           [-1 1] [0 1] [1 1]]))
+
+(defn neighbours4
+  "The four neighbors (without diagonals)."
+  [point]
+  (mapv #(mapv + point %) [[1 0] [-1 0] [0 -1] [0 1]]))
 
 (defn print-grid
   [grid]

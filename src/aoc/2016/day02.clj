@@ -1,6 +1,6 @@
 (ns aoc.2016.day02
   (:require [aoc.file :as file]
-            [aoc.math :as math]
+            [aoc.convert :as convert]
             [clojure.string :as str]))
 
 (defn parse-line
@@ -47,13 +47,13 @@
                   (assoc :starting-key code)
                   (update :codes conj code))))
           {:starting-key start
-           :codes []}
+           :codes        []}
           coll))
 
 (defn part01
   [input]
   (let [{:keys [codes]} (insert-codes keymap [1 1] input)]
-    (math/digits->long (map keymap codes))))
+    (convert/digits->long (map keymap codes))))
 
 (def keymap-star
   {[2 0] 1

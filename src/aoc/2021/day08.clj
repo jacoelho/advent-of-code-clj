@@ -1,7 +1,7 @@
 (ns aoc.2021.day08
   (:require [aoc.file :as file]
             [clojure.set :as set]
-            [aoc.math :as math]))
+            [aoc.convert :as convert]))
 
 (defn parse-line
   [line]
@@ -21,7 +21,7 @@
        (mapcat (partial take-last 4))
        (filter #(#{2 4 3 7} (count %)))
        (count)))
-      
+
 ;;     digits 0 1 2 3 4 5 6 7 8 9
 ;; # segments 6 2 5 5 4 5 6 3 7 6
 
@@ -107,7 +107,7 @@
 (defn decode-line
   [input]
   (let [mapping (swap (find-digits input))]
-    (math/digits->long (decode mapping input))))
+    (convert/digits->long (decode mapping input))))
 
 (defn part02
   [input]
