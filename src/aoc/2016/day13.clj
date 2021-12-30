@@ -23,19 +23,13 @@
 
 (def input 1362)
 
-(defn part01
-  [input]
-  (first (search/astar [1 1]
-                       (partial neighbours input)
-                       (partial geometry/manhattan-distance [31 39])
-                       (constantly 1))))
-
 (defn bfs-with-max-distance
-  [start max-distance neighbours]
+  [start max-distance neighbours goal?]
   (loop [q       (conj (PersistentQueue/EMPTY) start)
          visited {start 0}]
     (when-let [current (peek q)]
-      (if (<= max-distance (get visited current))
+      (if (or (<= max-distance (get visited current))
+              (goal? current))
         visited
         (let [next-distance (inc (get visited current))
               n          (->> current
@@ -44,6 +38,14 @@
           (recur (into (pop q) n)
                  (into visited (map (fn [n] [n next-distance])) n)))))))
 
+(defn part01
+  [input]
+  (let [goal [31 39]]
+    ((bfs-with-max-distance [1 1]
+                            Integer/MAX_VALUE
+                            (partial neighbours input)
+                            #(= % goal)) goal)))
+
 (defn part02
   [input]
-  (count (bfs-with-max-distance [1 1] 50 (partial neighbours input))))
+  (count (bfs-with-max-distance [1 1] 50 (partial neighbours input) (constantly false))))
