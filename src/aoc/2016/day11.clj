@@ -76,11 +76,7 @@
 (comment (time (part01 input)))
 
 (def input-part-2
-  {:elevator 0
-   :floors   {0 #{[:generator "promethium"] [:chip "promethium"][:generator "elerium"] [:chip "elerium"][:generator "dilithium"] [:chip "dilithium"]}
-              1 #{[:generator "cobalt"] [:generator "curium"] [:generator "ruthenium"] [:generator "plutonium"]}
-              2 #{[:chip "cobalt"] [:chip "curium"] [:chip "ruthenium"] [:chip "plutonium"]}
-              3 #{}}})
+  (update-in input [:floors 0] conj [:generator "elerium"] [:chip "elerium"][:generator "dilithium"] [:chip "dilithium"]))
 
 ;; 57
 ;; "Elapsed time: 844425.739294 msecs"
