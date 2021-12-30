@@ -4,27 +4,10 @@
 
 (defn parse-line
   [line]
-  (let [[_ op a b] (re-find #"([a-z]{3}) ([a-z]|-?\d+)\s*([a-z]|-?\d+)?" line)]
-    [op a b]))
+  (let [[_ & rest] (re-find #"([a-z]{3}) ([a-z]|-?\d+)\s*([a-z]|-?\d+)?" line)]
+    (mapv #(or (parse/try->int %) %) rest)))
 
-(defn operand
-  [v]
-  (if-let [v' (parse/try->int v)]
-    [:digit v']
-    [:register v]))
-
-(defn parse-instruction
-  [[op a b]]
-  (let [[t v] (operand a)]
-    (case [op t]
-      ["cpy" :digit] [:cpy-digit v b]
-      ["cpy" :register] [:cpy-register v b]
-      ["inc" :register] [:inc v]
-      ["dec" :register] [:dec v]
-      ["jnz" :digit] [:jnz-digit v (parse/->int b)]
-      ["jnz" :register] [:jnz-register v (parse/->int b)])))
-
-(def input (file/read-lines (comp parse-instruction parse-line) "2016/day12.txt"))
+(def input (file/read-lines parse-line "2016/day12.txt"))
 
 (defn execute
   [input {:keys [ip] :as state}]
@@ -32,24 +15,18 @@
     (assoc state :stopped true)
     (let [[op a b] (get input ip)]
       (case op
-        :cpy-register (-> state
-                          (assoc b (get state a 0))
-                          (update :ip inc))
-        :cpy-digit (-> state
-                       (assoc b (get state a a))
-                       (update :ip inc))
-        :inc (-> state
-                 (update a (fnil inc 0))
-                 (update :ip inc))
-        :dec (-> state
-                 (update a (fnil dec 0))
-                 (update :ip inc))
-        :jnz-register (update state :ip #(if (zero? (get state a 0))
-                                           (inc %)
-                                           (+ b %)))
-        :jnz-digit (update state :ip #(if (zero? a)
-                                        (inc %)
-                                        (+ b %)))))))
+        "cpy" (-> state
+                  (assoc b (get state a a))
+                  (update :ip inc))
+        "inc" (-> state
+                  (update a inc)
+                  (update :ip inc))
+        "dec" (-> state
+                  (update a dec)
+                  (update :ip inc))
+        "jnz" (update state :ip #(if (zero? (get state a a))
+                                   (inc %)
+                                   (+ b %)))))))
 
 (defn execute-all
   [input state]
@@ -58,8 +35,12 @@
       state
       (recur input next-state))))
 
-;; 318077
-(execute-all input {:ip 0})
+(def computer (into {:ip 0} (map vector ["a" "b" "c" "d"] (repeat 0))))
 
-;; 9227731
-(execute-all input {:ip 0 "c" 1})
+(defn part01
+  [input]
+  (get (execute-all input computer) "a"))
+
+(defn part02
+  [input]
+  (get (execute-all input (assoc computer "c" 1)) "a"))
