@@ -57,3 +57,11 @@
       (if-let [j (seen x)]
         j
         (recur (conj seen x) xs)))))
+
+(defn rotate
+  [n coll]
+  (if (empty? coll)
+    coll
+    (let [pos (mod n (count coll))
+          [tail head] (split-at pos coll)]
+      (concat head tail))))
