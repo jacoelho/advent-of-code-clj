@@ -28,10 +28,10 @@
   (loop [q       (conj (PersistentQueue/EMPTY) start)
          visited {start 0}]
     (when-let [current (peek q)]
-      (if (or (<= max-distance (get visited current))
+      (if (or (<= max-distance (visited current))
               (goal? current))
         visited
-        (let [next-distance (inc (get visited current))
+        (let [next-distance (inc (visited current))
               n          (->> current
                               (neighbours)
                               (remove visited))]
@@ -44,8 +44,11 @@
     ((bfs-with-max-distance [1 1]
                             Integer/MAX_VALUE
                             (partial neighbours input)
-                            #(= % goal)) goal)))
+                            #{goal}) goal)))
 
 (defn part02
   [input]
-  (count (bfs-with-max-distance [1 1] 50 (partial neighbours input) (constantly false))))
+  (count (bfs-with-max-distance [1 1]
+                                50
+                                (partial neighbours input)
+                                (constantly false))))
