@@ -41,12 +41,11 @@
 
 (defn longest-dfs [start neighbours-fn goal?]
   (loop [frontier [start]
-         longest 0]
-    (if (seq frontier)
-      (let [[path :as v] (peek frontier)]
-        (if (goal? v)
-          (recur (pop frontier) (max longest (count path)))
-          (recur (into (pop frontier) (neighbours-fn v)) longest)))
+         longest  0]
+    (if-let [[path :as v] (peek frontier)]
+      (if (goal? v)
+        (recur (pop frontier) (max longest (count path)))
+        (recur (into (pop frontier) (neighbours-fn v)) longest))
       longest)))
 
 (defn part02
