@@ -19,3 +19,10 @@
           (recur (into (pop q) (map (fn [[s cost]] [s (+ cost (heuristic s))])) neighbours-costs)
                  (into previous (map (fn [[s]] [s current])) neighbours-costs)
                  (into path-cost neighbours-costs)))))))
+
+(defn bfs
+  [start neighbours goal?]
+  (astar start
+         neighbours
+         (fn [el] (if (goal? el) 0 1))
+         (constantly 1)))
