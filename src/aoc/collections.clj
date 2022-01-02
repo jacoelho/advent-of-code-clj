@@ -49,14 +49,13 @@
                    m))
                (transient (empty m)) m)))
 
-(defn first-duplicate
-  [coll]
-  (loop [seen #{}
-         coll coll]
-    (when-let [[x & xs] (seq coll)]
-      (if-let [j (seen x)]
-        j
-        (recur (conj seen x) xs)))))
+(defn first-duplicate [coll]
+  (reduce (fn [acc [idx x]]
+            (if-let [v (get acc x)]
+              (reduced [(conj v idx) x])
+              (assoc! acc x [idx])))
+          (transient {})
+          (map-indexed vector coll)))
 
 (defn rotate
   [n coll]
@@ -65,3 +64,10 @@
     (let [pos (mod n (count coll))
           [tail head] (split-at pos coll)]
       (concat head tail))))
+
+(defn index-highest-value
+  [coll]
+  (->> (map-indexed vector coll)
+       (reduce (fn [[_ m :as acc] [_ v :as pair]]
+                 (if (< m v) pair acc)))
+       (first)))
