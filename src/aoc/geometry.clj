@@ -7,6 +7,12 @@
   ([a b]
    (reduce + (map (comp #(Math/abs %) -) a b))))
 
+(defn chebyshev-distance
+  ([a]
+   (chebyshev-distance (vec (repeat (count a) 0)) a))
+  ([a b]
+   (apply max (map (comp #(Math/abs ^long %) -) a b))))
+
 (defn points-between
   ([[x0 x1 :as points]]
    (when (seq points)
