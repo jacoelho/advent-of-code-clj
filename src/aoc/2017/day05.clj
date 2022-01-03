@@ -4,7 +4,7 @@
 
 (def input (->> "2017/day05.txt"
                 (file/read-lines)
-                (mapv parse/->int)
+                (mapv parse/string->int)
                 (map-indexed vector)
                 (into {})))
 

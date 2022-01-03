@@ -5,7 +5,7 @@
 
 (def input (->> (file/read-lines #(re-seq #"\d+" %) "2017/day06.txt")
                 (first)
-                (mapv parse/->int)))
+                (mapv parse/string->int)))
 
 (def example [0 2 7 0])
 

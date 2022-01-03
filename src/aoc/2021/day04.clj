@@ -9,7 +9,7 @@
   (->> data
        (first)
        (re-seq #"[^,]+")
-       (mapv parse/->int)))
+       (mapv parse/string->int)))
 
 (def raw-cards
   (->> data
@@ -17,7 +17,7 @@
        (remove #(= % ""))
        (map (fn [line]
               (let [[_ & rest] (re-find #"(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)" line)]
-                (mapv parse/->int rest))))
+                (mapv parse/string->int rest))))
        (partition 5)))
 
 (def cards

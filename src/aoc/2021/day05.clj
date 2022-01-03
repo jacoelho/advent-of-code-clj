@@ -6,7 +6,7 @@
 (defn parse-line
   [line]
   (let [[_ & rest] (re-find #"(\d+),(\d+) -> (\d+),(\d+)" line)]
-    (mapv parse/->int rest)))
+    (mapv parse/string->int rest)))
 
 (def input
   (file/read-lines parse-line "2021/day05.txt"))

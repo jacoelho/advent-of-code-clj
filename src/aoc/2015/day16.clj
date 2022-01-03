@@ -8,7 +8,7 @@
 (defn parse-line
   [line]
   (let [[_ number a aa b bb c cc] (re-find re line)
-        [number' aa' bb' cc']     (map parse/->int [number aa bb cc])]
+        [number' aa' bb' cc']     (map parse/string->int [number aa bb cc])]
     {number' {a aa'
               b bb'
               c cc'}}))

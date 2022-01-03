@@ -2,10 +2,6 @@
 
 (defn map-invert
   [m]
-  (reduce (fn [m [k v]] (assoc m v k)) {} m))
-
-(defn map-invert
-  [m]
   (persistent!
     (reduce-kv (fn [m k v] (assoc! m v k))
                (transient (empty m)) m)))
@@ -71,3 +67,17 @@
        (reduce (fn [[_ m :as acc] [_ v :as pair]]
                  (if (< m v) pair acc)))
        (first)))
+
+(defn sum-by
+  ([f coll]
+   (sum-by f 0 coll))
+  ([f val coll]
+   (transduce (map f) + val coll)))
+
+(defn count-by
+  [f s]
+  (reduce (fn [acc x]
+            (if (f x)
+              (inc acc)
+              acc))
+          0 s))

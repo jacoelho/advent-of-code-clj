@@ -8,7 +8,7 @@
   [line]
   (condp re-matches line
     #"^rotate (\w+) (\d+) steps?$" :>> (fn [[_ a b]]
-                                         [:rotate a (parse/->int b)])
+                                         [:rotate a (parse/string->int b)])
 
 
     #"^rotate based on position of letter (\w+)$" :>> (fn [[_ letter]]
@@ -18,13 +18,13 @@
                                                    [:swap a b])
 
     #"^swap position (\d+) with position (\d+)$" :>> (fn [[_ a b]]
-                                                       [:swap-position (parse/->int a) (parse/->int b)])
+                                                       [:swap-position (parse/string->int a) (parse/string->int b)])
 
     #"^reverse positions (\d+) through (\d+)$" :>> (fn [[_ a b]]
-                                                     [:reverse (parse/->int a) (parse/->int b)])
+                                                     [:reverse (parse/string->int a) (parse/string->int b)])
 
     #"^move position (\d+) to position (\d+)$" :>> (fn [[_ a b]]
-                                                     [:move (parse/->int a) (parse/->int b)])))
+                                                     [:move (parse/string->int a) (parse/string->int b)])))
 
 
 (def input (file/read-lines parse-line "2016/day21.txt"))

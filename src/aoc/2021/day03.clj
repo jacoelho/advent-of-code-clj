@@ -6,7 +6,7 @@
 (defn parse-line
   [line]
   (let [n (re-seq #"\d" line)]
-    (mapv parse/->int n)))
+    (mapv parse/string->int n)))
 
 (def example
   (mapv parse-line ["00100"

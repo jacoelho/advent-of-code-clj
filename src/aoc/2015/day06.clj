@@ -14,7 +14,7 @@
   [line operation-translator]
   (let [[_ op & coords] (re-find #"^(turn on|toggle|turn off) (\d+),(\d+) through (\d+),(\d+)" line)
         operation (operation-translator op)
-        [i j w z] (map parse/->int coords)]
+        [i j w z] (map parse/string->int coords)]
     [operation [i j] [w z]]))
 
 (def input

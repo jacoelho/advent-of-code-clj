@@ -15,7 +15,7 @@
 (defn parse-line
   [line]
   (let [[_ a op value b condition c] (re-find #"(\w+) (\w+) (-?\d+) if (\w+) (.{1,2}) (-?\d+)" line)]
-    [(operators op) a (parse/->int value) b (operators condition) (parse/->int c)]))
+    [(operators op) a (parse/string->int value) b (operators condition) (parse/string->int c)]))
 
 (def example (file/read-lines parse-line "2017/day08-example.txt"))
 (def input (file/read-lines parse-line "2017/day08.txt"))

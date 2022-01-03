@@ -6,7 +6,7 @@
 
 (defn parse-line
   [line]
-  (mapv parse/->int (re-seq #"\d" line)))
+  (mapv parse/string->int (re-seq #"\d" line)))
 
 (def input
   (->> "2021/day11.txt"

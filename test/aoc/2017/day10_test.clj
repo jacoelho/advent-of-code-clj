@@ -8,4 +8,4 @@
 
 (deftest part02
   (testing "inputs"
-    (is (= "7f94112db4e32e19cf6502073c66f9bb" (day10/part02 day10/input-bytes)))))
+    (is (= "7f94112db4e32e19cf6502073c66f9bb" (day10/part02 day10/input-string)))))

@@ -10,7 +10,7 @@
        (first)
        (map (fn [[_ direction blocks]]
               [direction
-               (parse/->int blocks)]))))
+               (parse/string->int blocks)]))))
 
 (def example
   [["R" 5]

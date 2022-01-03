@@ -12,7 +12,7 @@
   [line]
   (let [[_ direction units] (re-find #"^(\w+) (\d+)$" line)]
     [(directions direction)
-     (parse/->int units)]))
+     (parse/string->int units)]))
 
 (def example
   (->> "forward 5\ndown 5\nforward 8\nup 3\ndown 8\nforward 2"

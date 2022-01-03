@@ -8,11 +8,11 @@
   [line]
   (condp re-matches line
     #"^(\d+),(\d+)$" :>> (fn [[_ & rest]]
-                           [:pos (mapv parse/->int rest)])
+                           [:pos (mapv parse/string->int rest)])
 
 
     #"^fold along (x|y)=(\d+)$" :>> (fn [[_ axis value]]
-                                      [:fold [axis (parse/->int value)]])
+                                      [:fold [axis (parse/string->int value)]])
 
     #"$" :>> (fn [_] nil)))
 

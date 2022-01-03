@@ -7,7 +7,7 @@
   [line]
   (let [[_ name sector checksum] (re-find #"^([-a-z]+)+\-(\d+)\[([a-z]+)\]$" line)]
     {:name     (str/split name #"\-")
-     :sector   (parse/->int sector)
+     :sector   (parse/string->int sector)
      :checksum checksum}))
 
 (def example

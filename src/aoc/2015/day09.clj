@@ -8,7 +8,7 @@
 (defn parse-line
   [line]
   (let [[_ start end d] (re-find #"^(\w+) to (\w+) = (\d+)$" line)
-        distance (parse/->int d)]
+        distance (parse/string->int d)]
     [(->Pair start end distance) (->Pair end start distance)]))
 
 (def input

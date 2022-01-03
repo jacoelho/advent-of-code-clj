@@ -5,7 +5,7 @@
 (defn parse-line
   [line]
   (let [[_ & rest] (re-find #"^Disc #(\d+) has (\d+) positions; at time=0, it is at position (\d+)\.$" line)]
-    (mapv parse/->int rest)))
+    (mapv parse/string->int rest)))
 
 (def input (file/read-lines parse-line "2016/day15.txt"))
 

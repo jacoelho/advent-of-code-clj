@@ -7,14 +7,14 @@
   [line]
   (condp re-matches line
     #"^bot (\d+) gives low to (\w+) (\d+) and high to (\w+) (\d+)$" :>> (fn [[_ bot low-dst low high-dst high]]
-                                                                          [:move {:bot  (parse/->int bot)
-                                                                                  :low  [(keyword low-dst) (parse/->int low)]
-                                                                                  :high [(keyword high-dst) (parse/->int high)]}])
+                                                                          [:move {:bot  (parse/string->int bot)
+                                                                                  :low  [(keyword low-dst) (parse/string->int low)]
+                                                                                  :high [(keyword high-dst) (parse/string->int high)]}])
 
 
     #"^value (\d+) goes to bot (\d+)$" :>> (fn [[_ value bot]]
-                                             [:set {:bot   (parse/->int bot)
-                                                    :value (parse/->int value)}])))
+                                             [:set {:bot   (parse/string->int bot)
+                                                    :value (parse/string->int value)}])))
 
 (def input
   (file/read-lines parse-line "2016/day10.txt"))

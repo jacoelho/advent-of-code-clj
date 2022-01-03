@@ -26,3 +26,31 @@
          neighbours
          (fn [el] (if (goal? el) 0 1))
          (constantly 1)))
+
+(defn reachable-nodes
+  [neighbours node]
+  (loop [visited  #{}
+         frontier [node]]
+    (if-let [current (peek frontier)]
+      (if (contains? visited current)
+        (recur visited (pop frontier))
+        (recur (conj visited current)
+               (->> (neighbours current)
+                    (remove visited)
+                    (into (pop frontier)))))
+      visited)))
+
+(defn flood-fill
+  [neighbours-fn grid]
+  (loop [[x & xs] (keys grid)
+         res    {}
+         marker 0]
+    (if x
+      (if (contains? res x)
+        (recur xs res marker)
+        (recur xs
+               (into res (map vector
+                              (reachable-nodes neighbours-fn x)
+                              (repeat marker)))
+               (inc marker)))
+      res)))

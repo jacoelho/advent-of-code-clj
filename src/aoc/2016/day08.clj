@@ -10,11 +10,11 @@
       [:rotate
        (if (= axis "row") :row :column)
        (if (= coord "x") :x :y)
-       (parse/->int idx)
-       (parse/->int value)]
+       (parse/string->int idx)
+       (parse/string->int value)]
       [:rect
-       (parse/->int a)
-       (parse/->int b)])))
+       (parse/string->int a)
+       (parse/string->int b)])))
 
 (def input
   (file/read-lines parse-line "2016/day08.txt"))

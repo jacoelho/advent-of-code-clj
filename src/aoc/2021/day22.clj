@@ -10,7 +10,7 @@
 (defn parse-line
   [line]
   (let [[_ op & rest] (re-find line-re line)
-        [x-min x-max y-min y-max z-min z-max] (mapv parse/->int rest)]
+        [x-min x-max y-min y-max z-min z-max] (mapv parse/string->int rest)]
     [(op->int op) [x-min y-min z-min] [x-max y-max z-max]]))
 
 (def example-small (file/read-lines parse-line "2021/day22-example-small.txt"))

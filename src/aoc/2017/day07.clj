@@ -7,7 +7,7 @@
 (defn parse-line
   [line]
   (let [[_ node weight above] (re-find #"(\w+) \((\d+)\)(?:\s*-> (.+))?" line)]
-    [node {:weight (parse/->int weight)
+    [node {:weight (parse/string->int weight)
            :above  (if (nil? above)
                      []
                      (string/split above #", "))}]))

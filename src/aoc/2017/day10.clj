@@ -4,7 +4,7 @@
             [aoc.collections :as collections]))
 
 (def input (->> "2017/day10.txt"
-                (file/read-lines #(mapv parse/->int (re-seq #"\d+" %)))
+                (file/read-lines #(mapv parse/string->int (re-seq #"\d+" %)))
                 (first)))
 
 (defn reverse-section
@@ -39,16 +39,15 @@
         [a b] hash]
     (* a b)))
 
-(def input-bytes (->> "2017/day10.txt"
-                      (file/read-lines)
-                      (first)
-                      (mapv byte)))
+(def input-string (->> "2017/day10.txt"
+                       (file/read-lines)
+                       (first)))
 
 (def padding [17 31 73 47 23])
 
-(defn part02
+(defn knot-hash-64
   [input]
-  (->> (into input padding)
+  (->> (concat (map byte input) padding)
        (repeat)
        (take 64)                                            ;; 64 rounds
        (flatten)
@@ -58,3 +57,7 @@
        (map (partial apply bit-xor))
        (map (partial format "%02x"))
        (apply str)))
+
+(defn part02
+  [input]
+  (knot-hash-64 input))

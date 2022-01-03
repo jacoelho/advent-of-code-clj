@@ -7,7 +7,7 @@
   [1 2 3 4 5 7 8 9 10 11])
 
 (def input
-  (file/read-lines parse/->int "2015/day24.txt"))
+  (file/read-lines parse/string->int "2015/day24.txt"))
 
 (defn entanglement
   [coll]

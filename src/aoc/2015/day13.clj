@@ -8,7 +8,7 @@
 (defn parse-line
   [line]
   (let [[_ source sign d destination] (re-find #"^(\w+) would (lose|gain) (\d+) happiness units by sitting next to (\w+)\.$" line)
-        happiness (parse/->int d)]
+        happiness (parse/string->int d)]
     {[source destination] (if (= sign "lose") (* -1 happiness) happiness)}))
 
 (def input

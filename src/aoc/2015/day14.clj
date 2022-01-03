@@ -7,9 +7,9 @@
   [line]
   (let [[_ reindeer speed resistence rest] (re-find #"^(\w+) can fly (\d+) km/s for (\d+) seconds, but then must rest for (\d+) seconds\.$" line)]
     {:reindeer   reindeer
-     :kms        (parse/->int speed)
-     :resistence (parse/->int resistence)
-     :rest       (parse/->int rest)}))
+     :kms        (parse/string->int speed)
+     :resistence (parse/string->int resistence)
+     :rest       (parse/string->int rest)}))
 
 (def input
   (file/read-lines parse-line "2015/day14.txt"))

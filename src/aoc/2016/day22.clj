@@ -8,7 +8,7 @@
 (defn parse-line
   [line]
   (let [[_ & rest] (re-find #"/dev/grid/node-x(\d+)-y(\d+)\s*(\d+)T\s*(\d+)T\s*(\d+)T" line)
-        [x y size used available] (mapv parse/->int rest)]
+        [x y size used available] (mapv parse/string->int rest)]
     (when x
       [[x y] {:size      size
               :used      used

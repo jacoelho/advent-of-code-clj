@@ -6,7 +6,7 @@
 (defn parse-line
   [line]
   (->> (re-seq #"\d+" line)
-       (mapv parse/->int)))
+       (mapv parse/string->int)))
 
 (def input (file/read-lines parse-line "2017/day02.txt"))
 

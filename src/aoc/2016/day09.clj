@@ -10,8 +10,8 @@
   [line]
   (let [[_ elements count] (re-find #"\((\d+)x(\d+)\)" line)]
     (when (not (nil? elements))
-      [(parse/->int elements)
-       (parse/->int count)])))
+      [(parse/string->int elements)
+       (parse/string->int count)])))
 
 (defn decompress
   [unloop line]

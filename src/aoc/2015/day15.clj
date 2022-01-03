@@ -14,7 +14,7 @@
 (defn parse-line
   [line]
   (let [[_ name & attributes] (re-find re line)
-        [c d f t cal]           (map parse/->int attributes)]
+        [c d f t cal]           (map parse/string->int attributes)]
     [name {
            :capacity   c
            :durability d

@@ -9,9 +9,9 @@
       "hlf" [:hlf register-or-offset]
       "tpl" [:tpl register-or-offset]
       "inc" [:inc register-or-offset]
-      "jmp" [:jmp (parse/->int register-or-offset)]
-      "jie" [:jie register-or-offset (parse/->int offset)]
-      "jio" [:jio register-or-offset (parse/->int offset)])))
+      "jmp" [:jmp (parse/string->int register-or-offset)]
+      "jie" [:jie register-or-offset (parse/string->int offset)]
+      "jio" [:jio register-or-offset (parse/string->int offset)])))
 
 (def input
   (file/read-lines parse-line "2015/day23.txt"))

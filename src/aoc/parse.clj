@@ -1,6 +1,6 @@
 (ns aoc.parse)
 
-(defn ->int
+(defn string->int
   [int]
   (Integer/parseInt int))
 

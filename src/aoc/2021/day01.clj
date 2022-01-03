@@ -15,7 +15,7 @@
    263])
 
 (def input
-  (file/read-lines parse/->int "2021/day01.txt"))
+  (file/read-lines parse/string->int "2021/day01.txt"))
 
 (defn part01
   [input]

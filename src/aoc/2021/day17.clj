@@ -5,7 +5,7 @@
 (defn parse-line
   [line]
   (let [[_ & rest] (re-find #"target area: x=(-?\d+)..(-?\d+), y=(-?\d+)..(-?\d+)" line)
-        [x0 x1 y0 y1] (mapv parse/->int rest)]
+        [x0 x1 y0 y1] (mapv parse/string->int rest)]
     [[x0 y0]
      [x1 y1]]))
 

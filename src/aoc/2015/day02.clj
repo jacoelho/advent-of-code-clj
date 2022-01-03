@@ -7,7 +7,7 @@
 (defn parse
   [line]
   (->> (str/split line #"x")
-       (map parse/->int)))
+       (map parse/string->int)))
 
 (def input
   (file/read-lines parse "2015/day02.txt"))

@@ -5,7 +5,7 @@
    [clojure.math.combinatorics :refer [subsets]]))
 
 (def input
-  (file/read-lines parse/->int "2015/day17.txt"))
+  (file/read-lines parse/string->int "2015/day17.txt"))
 
 (defn containers-matches
   [input]

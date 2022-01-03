@@ -5,7 +5,7 @@
 
 (defn parse-line
   [line]
-  (map parse/->int (str/split line #",")))
+  (map parse/string->int (str/split line #",")))
 
 (def input
    (vec (first (file/read-lines parse-line "2021/day06.txt"))))

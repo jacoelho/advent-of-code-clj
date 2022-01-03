@@ -20,8 +20,9 @@
   [pos steps]
   (lazy-seq
     (if (seq steps)
-      (cons pos (move (mapv + pos (neighbours (first steps)))
-                      (rest steps)))
+      (cons pos
+            (move (mapv + pos (neighbours (first steps)))
+                  (rest steps)))
       [pos])))
 
 (defn part01

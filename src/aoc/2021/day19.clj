@@ -65,7 +65,7 @@
   [lines]
   (let [[match & rest] (re-find #"(-?\d+),(-?\d+),(-?\d+)" lines)]
     (when match
-      (seq->point (mapv parse/->int rest)))))
+      (seq->point (mapv parse/string->int rest)))))
 
 (defn parse-scanner
   [lines]
