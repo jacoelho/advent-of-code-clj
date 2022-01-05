@@ -10,7 +10,7 @@
 
 (defn spinlock
   [{:keys [pos step memory] :or {pos 0 memory [0]}} elem]
-  (let [pos' (inc (mod (+ pos step) (count memory)))]
+  (let [pos' (inc (rem (+ pos step) (count memory)))]
     {:pos    pos'
      :memory (insert-at memory pos' elem)
      :step   step}))
@@ -24,14 +24,18 @@
        (second)))
 
 (defn spinlock-two
+  "spinlock defined in part01 is too slow
+  we only need to track index one value"
   [step n]
-  (loop [[x & xs] (range 1 n)
+  (loop [elem     1
          slot-one 0
-         pos 0]
-    (if x
-      (let [pos' (inc (mod (+ pos step) x))]
-        (recur xs (if (= pos' 1) x slot-one) pos'))
-      slot-one)))
+         pos      0]
+    (let [next-pos  (+ 1 (rem (+ pos step) elem))
+          next-elem (+ 1 elem)]
+      (cond
+        (= elem n) slot-one
+        (= next-pos 1) (recur next-elem elem next-pos)
+        :else (recur next-elem slot-one next-pos)))))
 
 (defn part02
   [input]

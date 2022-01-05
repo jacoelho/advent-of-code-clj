@@ -10,6 +10,12 @@
     (Integer/parseInt int)
     (catch NumberFormatException _ nil)))
 
+(defn try-or-v->int
+  [v]
+  (try
+    (Integer/parseInt v)
+    (catch NumberFormatException _ v)))
+
 (defn ->uint
   [int]
   (Integer/parseUnsignedInt int))
