@@ -25,23 +25,18 @@
 
 (defn turn
   [grid position [x y :as direction]]
-  (let [directions (-> #{[1 0] [-1 0] [0 -1] [0 1]}
-                        (disj direction)
-                        (disj [(- x) (- y)]))]
-    (some #(when (grid (add-position position %))
-             %)
-          directions)))
+  (some #(when (grid (add-position position %)) %)
+        (disj #{[1 0] [-1 0] [0 -1] [0 1]} direction [(- x) (- y)])))
 
 (defn traverse
   [grid position direction]
   (lazy-seq
-    (if-let [current-element (grid position)]
-      (cons current-element
-            (if (= current-element \+)
-              (let [direction' (turn grid position direction)]
-                (traverse grid (add-position position direction') direction'))
-              (traverse grid (add-position position direction) direction)))
-      nil)))
+    (when-let [current-element (grid position)]
+      (let [direction (if (= current-element \+)
+                        (turn grid position direction)
+                        direction)]
+        (cons current-element
+              (traverse grid (add-position position direction) direction))))))
 
 (defn part01
   [input]
