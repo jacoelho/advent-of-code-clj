@@ -95,15 +95,6 @@
        (:sound)
        (last)))
 
-(def op-mapping-queue
-  {"jgz" op-jgz
-   "snd" (comp ip-inc op-snd-queue)
-   "rcv" op-rcv-queue
-   "mod" (comp ip-inc op-mod)
-   "mul" (comp ip-inc op-mul)
-   "add" (comp ip-inc op-add)
-   "set" (comp ip-inc op-set)})
-
 (defn try-restart-program
   [s name]
   (if (< 0 (count (get-in s [name :receive])))
@@ -137,4 +128,9 @@
 
 (defn part02
   [input]
-  (get-in (execute-two op-mapping-queue input) [:b :sent]))
+  (get-in (execute-two
+            (-> op-mapping
+                (assoc "rcv" op-rcv-queue)
+                (assoc "snd" (comp ip-inc op-snd-queue)))
+                input)
+            [:b :sent]))
