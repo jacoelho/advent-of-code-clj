@@ -40,12 +40,11 @@
 (defn virus-seq
   [behaviour-fn {:keys [position direction grid] :as state}]
   (lazy-seq
-    (let [node     (get grid position \.)
-          [node' direction'] (behaviour-fn node direction)
-          infected (if (= \# node') 1 0)]
+    (let [node (get grid position \.)
+          [node' direction'] (behaviour-fn node direction)]
       (cons state
             (virus-seq behaviour-fn (-> state
-                                        (update :infected (fnil + 0) infected)
+                                        (update :infected (fnil + 0) (if (= \# node') 1 0))
                                         (assoc :position (mapv + position (direction-step direction')))
                                         (assoc :direction direction')
                                         (assoc-in [:grid position] node')))))))
