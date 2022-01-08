@@ -51,8 +51,7 @@
 (defn matrix-after-n
   [input n]
   (->> initial-grid
-       (iterate (partial (comp stitch
-                               (partial enhance input))))
+       (iterate (comp stitch (partial enhance input)))
        (drop n)
        (first)
        (collections/sum-by (partial reduce +))))
