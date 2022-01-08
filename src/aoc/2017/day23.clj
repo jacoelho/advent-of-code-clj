@@ -84,5 +84,5 @@
   (let [b (+ 100000 (* 100 (nth (first input) 2)))
         c (+ b 17000)]
     (->> (range b (inc c) 17)
-         (filter (complement math/prime?))
+         (remove math/prime?)
          (count))))
