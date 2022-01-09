@@ -9,7 +9,7 @@
 
 (defn parse-file
   [f]
-  (->> (file/read-lines parse-line f)))
+  (file/read-lines parse-line f))
 
 (defn child->parents
   [coll]
