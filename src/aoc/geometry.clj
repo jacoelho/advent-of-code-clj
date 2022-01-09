@@ -5,7 +5,7 @@
   ([a]
    (manhattan-distance (vec (repeat (count a) 0)) a))
   ([a b]
-   (reduce + (map (comp #(Math/abs %) -) a b))))
+   (reduce + (map (comp #(Math/abs ^int %) -) a b))))
 
 (defn chebyshev-distance
   ([a]
