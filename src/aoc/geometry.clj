@@ -73,10 +73,8 @@
   ([grid]
    (print-map-grid grid \_))
   ([grid empty-char]
-   (let [keys' (keys grid)
-         max-x (inc (apply max (map first keys')))
-         max-y (inc (apply max (map second keys')))]
-     (doseq [y (range max-y)]
-       (doseq [x (range max-x)]
+   (let [[[x-min y-min] [x-max y-max]] (map-grid-corners grid)]
+     (doseq [y (range y-min (inc y-max))]
+       (doseq [x (range x-min (inc x-max))]
          (print (get grid [x y] empty-char)))
        (print "\n")))))
