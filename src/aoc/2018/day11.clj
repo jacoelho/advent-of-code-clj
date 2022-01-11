@@ -3,9 +3,6 @@
 
 (def input 4151)
 
-(set! *unchecked-math* :warn-on-boxed)
-(set! *warn-on-reflection* true)
-
 (defn hundreds-digit
   ^long [^long n]
   (mod (quot n 100) 10))
@@ -19,42 +16,45 @@
         (hundreds-digit)
         (- 5))))
 
-(defn fuel-cells-grid
+(defn summed-area-table
   [serial]
-  (into {}
-        (for [y (range 1 301)
-              x (range 1 301)]
-          [[x y] (power-level [x y] serial)])))
+  (->> (reduce (fn [m [^long x ^long y :as p]]
+                 (assoc m p (- (+ (power-level p serial)
+                                  (get m [x (dec y)] 0)
+                                  (get m [(dec x) y] 0))
+                               (get m [(dec x) (dec y)] 0)))) {}
+               (for [y (range 1 301)
+                     x (range 1 301)]
+                 [x y]))))
 
-(defn square
-  [[^long x ^long y] ^long size]
-  (for [y (range y (+ y size))
-        x (range x (+ x size))]
-    [x y]))
+(defn square-power
+  [grid [^long x ^long y] ^long size]
+  (let [[x-min y-min x-max y-max] [(dec x) (dec y) (+ x (dec size)) (+ y (dec size))]]
+    (-> (get grid [x-min y-min] 0)
+        (+ (get grid [x-max y-max] 0))
+        (- (get grid [x-max y-min] 0))
+        (- (get grid [x-min y-max] 0)))))
 
-(defn power-square-n
+(defn max-power-square-n
   [^long n grid]
   (->> (for [x (range 1 (- 301 n))
              y (range 1 (- 301 n))]
-         [[x y] (apply + (map #(grid %) (square [x y] n)))])
-       (into {})
+         [[x y] (square-power grid [x y] n)])
        (apply max-key second)))
 
 (defn part01
   [input]
-  (->> (fuel-cells-grid input)
-       (power-square-n 3)
+  (->> (summed-area-table input)
+       (max-power-square-n 3)
        (first)
        (str/join ",")))
 
-;; "20,46"
-(comment (part01 input))
-
 (defn part02
   [input]
-  (let [grid (fuel-cells-grid input)]
-    (->> (range 3 301)
-         (pmap (fn [size] [size (power-square-n size grid)]))
-         (apply max-key (comp second second)))))
+  (let [grid (summed-area-table input)]
+    (->> (range 1 300)
+         (pmap (fn [size] [(max-power-square-n size grid) size]))
+         (apply max-key (comp second first))
+         (#(let [[[[x y] _] size] %]
+             (str/join "," [x y size]))))))
 
-(comment (part02 input))
