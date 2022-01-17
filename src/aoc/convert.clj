@@ -10,10 +10,10 @@
              (conj res (mod n 2))))))
 
 (defn long->digits [^long num]
-  (loop [n num
+  (loop [n   (Math/abs num)
          res '()]
-    (if (= n 0)
-      res
+    (if (< n 10)
+      (conj res n)
       (recur (quot n 10) (conj res (rem n 10))))))
 
 (defn digits->long [col]
