@@ -29,13 +29,12 @@
   [point]
   (mapv #(mapv + point %) [[0 -1] [-1 0] [1 0] [0 1]]))
 
-(defn unit-to-attack?
+(defn select-target
   [{:keys [units]} pos]
   (let [enemy-type       (enemy? (get-in units [pos :type]))
         enemies-adjacent (->> (neighbours-reading-order pos)
-                              (filter (fn [p]
-                                        (when-let [v (units p)]
-                                          (= (:type v) enemy-type)))))]
+                              (filter #(when-let [v (units %)]
+                                         (= (:type v) enemy-type))))]
     (when (seq enemies-adjacent)
       (let [min-hp (->> (map units enemies-adjacent)
                         (apply min-key :hp)
@@ -43,7 +42,7 @@
         (->> (map (juxt identity units) enemies-adjacent)
              (filter #(= min-hp (:hp (second %))))
              (sort-by (comp reading-order first))
-             (first))))))
+             (ffirst))))))
 
 (defn move
   [{:keys [grid units] :as state} from to]
@@ -101,7 +100,7 @@
             (first)
             (second))))))
 
-(defn attack!
+(defn deal-damage
   [{:keys [units] :as state} source target]
   (if target
     (let [units' (update-in units [target :hp] - (get-in units [source :atk]))]
@@ -116,14 +115,14 @@
   [state pos]
   (if ((:turns state) pos)
     state
-    (if-let [target (first (unit-to-attack? state pos))]
+    (if-let [target (select-target state pos)]
       (-> state
-          (attack! pos target)
+          (deal-damage pos target)
           (update :turns conj pos))
       (let [new-pos (best-move state pos)
             state'  (move state pos new-pos)
-            target  (unit-to-attack? state' new-pos)]
-        (-> (attack! state' new-pos (first target))
+            target  (select-target state' new-pos)]
+        (-> (deal-damage state' new-pos target)
             (update :turns conj new-pos))))))
 
 (defn enemy-alive?
