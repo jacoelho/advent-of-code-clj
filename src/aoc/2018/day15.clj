@@ -59,7 +59,7 @@
   (->> (neighbours-reading-order pos)
        (filter #(#{\. want} (grid %)))))
 
-(defn bfs-reading-order
+(defn bfs
   [start neighbours goal?]
   (loop [q        (conj (PersistentQueue/EMPTY) start)
          previous {}
@@ -73,32 +73,35 @@
                (conj found current))
         (let [n (->> current
                      (neighbours)
-                     (remove visited)
-                     (sort-by reading-order))]
+                     (remove visited))]
           (recur (into (pop q) n)
                  (into previous (map (fn [s] [s current])) n)
                  (into visited n)
                  found)))
       (->> found
-           (map #(reverse (take-while identity (iterate previous %))))
-           (sort-by count)))))
-
+           (map (comp (fn [coll]
+                        {:steps    (count coll)
+                         :goal     (last coll)
+                         :position (second coll)})
+                      (fn [el]
+                        (reverse
+                          (take-while identity (iterate previous el))))))))))
 (defn best-move
   [{:keys [units] :as state} pos]
   (let [enemy (enemy? (get-in units [pos :type]))
-        found (bfs-reading-order pos (partial neighbours state enemy)
-                                 #(= enemy (get-in state [:units % :type])))]
+        found (bfs pos (partial neighbours state enemy)
+                   #(= enemy (get-in state [:units % :type])))]
     (when (seq found)
       ;1. "To move, the unit first considers the squares that are in range and determines which of those squares it could reach in the fewest steps"
       ;2. "If multiple squares are in range and tied for being reachable in the fewest steps, the square which is first in reading order is chosen. "
       ;3. "If multiple steps would put the unit equally closer to its destination, the unit chooses the step which is first in reading order."
-      (let [distance (count (first found))
-            found    (filter #(= (count %) distance) found)
-            goal     (last (first (sort-by (comp reading-order last) found)))
-            found    (filter #(= (last %) goal) found)]
-        (-> (sort-by (comp reading-order second) found)
+      (let [distance (:steps (first (sort-by :steps found)))
+            found    (filter #(= (:steps %) distance) found)
+            goal     (:goal (first (sort-by (comp reading-order :goal) found)))
+            found    (filter #(= (:goal %) goal) found)]
+        (-> (sort-by (comp reading-order :position) found)
             (first)
-            (second))))))
+            (:position))))))
 
 (defn deal-damage
   [{:keys [units] :as state} source target]
