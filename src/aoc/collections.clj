@@ -81,3 +81,7 @@
               (inc acc)
               acc))
           0 s))
+
+(defn subseq?
+  [a b]
+  (some #{a} (partition (count a) 1 b)))

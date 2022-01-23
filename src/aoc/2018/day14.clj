@@ -34,4 +34,3 @@
          (:recipes)
          (apply str))
     (str input)))
-
