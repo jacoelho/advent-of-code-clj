@@ -151,4 +151,3 @@
               ((m op) registers instruction))
             [0 0 0 0])
          (first))))
-
