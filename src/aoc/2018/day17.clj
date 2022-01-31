@@ -58,6 +58,7 @@
     (flow-step grid max-y (direction position))
     grid))
 
+;; refactored on solution https://github.com/mfikes/advent-of-code/blob/master/src/advent_2018/day_17.cljc
 (defn flow-step
   [grid max-y [_ y :as position]]
   (let [grid (assoc grid position \|)]
