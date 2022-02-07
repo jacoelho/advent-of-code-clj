@@ -3,11 +3,16 @@
 ## Installation
 
 Run all tests:
+```bash
+bin/kaocha
 ```
-clj -M:test
+
+Run a specific year:
+```bash
+bin/kaocha --focus :2018
 ```
 
 Run a specific test:
-```
-clj -M:test --focus aoc.2015.day05-test
+```bash
+bin/kaocha --focus aoc.2018.day18-test
 ```
