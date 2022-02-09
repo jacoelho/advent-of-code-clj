@@ -6,19 +6,19 @@
 (defn parse-line
   [line]
   (let [[_ op & xs] (re-find #"(\w+) (\d+) (\d+) (\d+)" line)
-        values (mapv parse/string->int xs)]
+        values      (mapv parse/string->int xs)]
     [op (into [0] values)]))
 
 (defn parse-file
   [f]
-  (let [file' (file/read-lines f)
-        program (->> (drop 1 file')
-                     (mapv parse-line))
+  (let [file'      (file/read-lines f)
+        program    (->> (drop 1 file')
+                        (mapv parse-line))
         ip-binding (->> (first file')
                         (re-find #"\d+")
                         (parse/string->int))]
     {:ip-binding ip-binding
-     :program program}))
+     :program    program}))
 
 (def input (parse-file "2018/day19.txt"))
 
@@ -41,7 +41,7 @@
   (->> (run-program input [0 0 0 0 0 0])
        (first)))
 
-(defn factors 
+(defn factors
   [n]
   (filter #(zero? (rem n %)) (range 1 (inc n))))
 
