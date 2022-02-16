@@ -1,8 +1,7 @@
 (ns aoc.2018.day22
   (:require [aoc.collections :as collections]
             [aoc.geometry :as geometry]
-            [aoc.search :as search]
-            [clojure.set :as set]))
+            [aoc.search :as search]))
 
 (def input {:depth  11991
             :target [6 797]})
