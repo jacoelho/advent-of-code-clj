@@ -21,6 +21,7 @@
    (part01 input 0))
   ([input constellations]
    (if (seq input)
-     (recur (set/difference input (search/reachable-nodes (partial neighbours input) (first input)))
+     (recur (set/difference input (search/reachable-nodes (partial neighbours input) 
+                                                          (first input)))
             (inc constellations))
      constellations)))

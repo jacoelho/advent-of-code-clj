@@ -95,9 +95,13 @@
            (sort-by target-selection-criteria (all-groups systems)))))
 
 (defn resolve-damage
-  [attacker {:keys [hp]
+  [attacker {:keys [units hp]
              :as   defender}]
-  (update defender :units - (quot (estimate-damage attacker defender) hp)))
+  (let [damage          (estimate-damage attacker defender)
+        total-hp        (* hp units)
+        remaining-hp    (- total-hp damage)
+        remaining-units (max (int (Math/ceil (/ remaining-hp hp))) 0)]
+    (assoc defender :units remaining-units)))
 
 (defn fight-step
   [systems]
@@ -113,8 +117,7 @@
                 res)))
           systems
           (->> (select-targets systems)
-               (sort-by (comp (comp - :initiative) 
-                              first)))))
+               (sort-by (comp (comp - :initiative) first)))))
 
 (defn fight-seq
   [systems]
