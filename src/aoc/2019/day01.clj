@@ -1,4 +1,4 @@
-(ns aoc.2019.day01 
+(ns aoc.2019.day01
   (:require [aoc.file :as file]
             [aoc.parse :as parse]
             [aoc.collections :as collections]))
