@@ -1,16 +1,18 @@
 #kaocha/v1
- {:tests [{:id          :2015
-           :test-paths ["test/aoc/2015"]}
-          {:id          :2016
-           :test-paths ["test/aoc/2016"]}
-          {:id          :2017
-           :test-paths ["test/aoc/2017"]}
-          {:id          :2018
-           :test-paths ["test/aoc/2018"]}
-          {:id          :2021
-           :test-paths ["test/aoc/2021"]}]
-  :plugins [:kaocha.plugin/profiling]
-  :capture-output? true
-  :color? true
-  :reporter kaocha.report.progress/report
+ {:tests                         [{:id         :2015
+                                   :test-paths ["test/aoc/2015"]}
+                                  {:id         :2016
+                                   :test-paths ["test/aoc/2016"]}
+                                  {:id         :2017
+                                   :test-paths ["test/aoc/2017"]}
+                                  {:id         :2018
+                                   :test-paths ["test/aoc/2018"]}
+                                  {:id         :2019
+                                   :test-paths ["test/aoc/2019"]}
+                                  {:id         :2021
+                                   :test-paths ["test/aoc/2021"]}]
+  :plugins                       [:kaocha.plugin/profiling]
+  :capture-output?               true
+  :color?                        true
+  :reporter                      kaocha.report.progress/report
   :kaocha.plugin.profiling/count 100}
