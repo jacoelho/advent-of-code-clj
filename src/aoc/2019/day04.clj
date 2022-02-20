@@ -13,29 +13,21 @@
   [password]
   (apply <= password))
 
-(defn password?
-  [password]
-  (let [digits (convert/int->digits password)]
-    (and (increase? digits)
-         (adjacent-equal? digits))))
-
 (defn part01
   [[a b]]
   (->> (range a (inc b))
-       (collections/count-by password?)))
+       (map convert/int->digits)
+       (collections/count-by #(and (increase? %)
+                                   (adjacent-equal? %)))))
 
 (defn exactly-two-adjacent?
   [password]
   (->> (frequencies password)
        (some #(= 2 (second %)))))
 
-(defn password-improved?
-  [password]
-  (let [digits (convert/int->digits password)]
-    (and (increase? digits)
-         (exactly-two-adjacent? digits))))
-
 (defn part02
   [[a b]]
   (->> (range a (inc b))
-       (collections/count-by password-improved?)))
+       (map convert/int->digits)
+       (collections/count-by #(and (increase? %)
+                                   (exactly-two-adjacent? %)))))
