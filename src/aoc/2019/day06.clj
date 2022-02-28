@@ -10,19 +10,18 @@
 
 (defn orbits
   [neighbours start]
-  (loop [visited  #{}
-         frontier [[start 0]]
-         result   {}]
+  (loop [visited  {}
+         frontier [[start 0]]]
     (if-let [[orbit cost] (peek frontier)]
-      (if (contains? visited orbit)
-        (recur visited (pop frontier) result)
-        (recur (conj visited orbit)
-               (->> (neighbours orbit)
-                    (remove visited)
-                    (mapv #(vector % (inc cost)))
-                    (into (pop frontier)))
-               (conj result [orbit cost])))
-      result)))
+      (if (visited orbit)
+        (recur visited (pop frontier))
+        (let [neighbours-cost (inc cost)]
+          (recur (assoc visited orbit cost)
+                 (->> (neighbours orbit)
+                      (keep #(when-not (visited %)
+                               [% neighbours-cost]))
+                      (into (pop frontier))))))
+      visited)))
 
 (defn part01
   [input]
