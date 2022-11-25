@@ -8,6 +8,6 @@
  :aliases {:nrepl {:jvm-opts   ["-XX:+UseContainerSupport", "-XX:MaxRAMPercentage=85"]
                    :main-opts  ["-e" "(do,(set!,*warn-on-reflection*,true),nil)"
                                 "-m" "nrepl.cmdline" "--bind" "0.0.0.0" "--port" "8888"]
-                   :extra-deps {nrepl/nrepl {:mvn/version "0.9.0"}}}
+                   :extra-deps {nrepl/nrepl {:mvn/version "1.0.0"}}}
            :test  {:extra-paths ["test"]
-                   :extra-deps {lambdaisland/kaocha {:mvn/version "1.60.977"}}}}}
+                   :extra-deps  {lambdaisland/kaocha {:mvn/version "1.69.1069"}}}}}
