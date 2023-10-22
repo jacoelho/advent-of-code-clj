@@ -1,10 +1,6 @@
-# See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.194.0/containers/java/.devcontainer/base.Dockerfile
+FROM mcr.microsoft.com/devcontainers/java:1-21-bullseye
 
-# [Choice] Java version: 11, 16
-ARG VARIANT="16"
-FROM mcr.microsoft.com/vscode/devcontainers/java:0-${VARIANT}
-
-ARG CLOJURE_VERSION="1.11.1.1155"
+ARG CLOJURE_VERSION="1.11.1.1413"
 ARG CLOJURE_URL="https://download.clojure.org/install/linux-install-${CLOJURE_VERSION}.sh"
 ARG CLOJURE_PATH="/usr/bin/clojure"
 ARG CLOJURE_INSTALLER="/tmp/clojure"
