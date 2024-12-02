@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/devcontainers/java:1-21-bullseye
 
-ARG CLOJURE_VERSION="1.11.1.1413"
+ARG CLOJURE_VERSION="1.12.0.1488"
 ARG CLOJURE_URL="https://download.clojure.org/install/linux-install-${CLOJURE_VERSION}.sh"
 ARG CLOJURE_PATH="/usr/bin/clojure"
 ARG CLOJURE_INSTALLER="/tmp/clojure"
